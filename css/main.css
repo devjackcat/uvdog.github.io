@@ -1548,7 +1548,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #f485ff;
+  background: #6bffff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2425,4 +2425,12 @@ hr {
     width: auto;
     text-align: center;
   }
+}
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+select:focus,
+textarea:focus {
+  border-color: #f32853;
+  box-shadow: 0 0 0 1px #f32853;
 }
