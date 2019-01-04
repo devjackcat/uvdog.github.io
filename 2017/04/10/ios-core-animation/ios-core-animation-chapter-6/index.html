@@ -1,0 +1,770 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="核心动画," />
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言 复杂的组织都是专门化的Catharine R. Stimpson  到目前为止，我们已经探讨过CALayer类了，同时我们也了解到了一些非常有用的绘图和动画功能。但是Core Animation图层不仅仅能作用于图片和颜色而已。本章就会学习其他的一些图层类，进一步扩展使用Core Animation绘图的能力。 CAShapeLayer在第四章『视觉效果』我们学习到了不使用图片的情况下用CG">
+<meta name="keywords" content="核心动画">
+<meta property="og:type" content="article">
+<meta property="og:title" content="核心动画-专用图层">
+<meta property="og:url" content="http://blog.devjackcat.com/2017/04/10/ios-core-animation/ios-core-animation-chapter-6/index.html">
+<meta property="og:site_name" content="JackCat">
+<meta property="og:description" content="前言 复杂的组织都是专门化的Catharine R. Stimpson  到目前为止，我们已经探讨过CALayer类了，同时我们也了解到了一些非常有用的绘图和动画功能。但是Core Animation图层不仅仅能作用于图片和颜色而已。本章就会学习其他的一些图层类，进一步扩展使用Core Animation绘图的能力。 CAShapeLayer在第四章『视觉效果』我们学习到了不使用图片的情况下用CG">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/5.23.jpeg">
+<meta property="og:updated_time" content="2018-09-16T13:01:07.742Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="核心动画-专用图层">
+<meta name="twitter:description" content="前言 复杂的组织都是专门化的Catharine R. Stimpson  到目前为止，我们已经探讨过CALayer类了，同时我们也了解到了一些非常有用的绘图和动画功能。但是Core Animation图层不仅仅能作用于图片和颜色而已。本章就会学习其他的一些图层类，进一步扩展使用Core Animation绘图的能力。 CAShapeLayer在第四章『视觉效果』我们学习到了不使用图片的情况下用CG">
+<meta name="twitter:image" content="http://blog.devjackcat.com/images/ios-core-animation/5.23.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'xirong'
+    }
+  };
+</script>
+
+  <title> 核心动画-专用图层 | JackCat </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">JackCat</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                核心动画-专用图层
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-10T14:09:25+08:00" content="2017-04-10">
+              2017-04-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/04/10/ios-core-animation/ios-core-animation-chapter-6/" class="leancloud_visitors" data-flag-title="核心动画-专用图层">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
+<p>复杂的组织都是专门化的<br>Catharine R. Stimpson</p>
+</blockquote>
+<p>到目前为止，我们已经探讨过CALayer类了，同时我们也了解到了一些非常有用的绘图和动画功能。但是Core Animation图层不仅仅能作用于图片和颜色而已。本章就会学习其他的一些图层类，进一步扩展使用Core Animation绘图的能力。</p>
+<h1 id="CAShapeLayer"><a href="#CAShapeLayer" class="headerlink" title="CAShapeLayer"></a>CAShapeLayer</h1><p>在第四章『视觉效果』我们学习到了不使用图片的情况下用CGPath去构造任意形状的阴影。如果我们能用同样的方式创建相同形状的图层就好了。</p>
+<p>CAShapeLayer是一个通过矢量图形而不是bitmap来绘制的图层子类。你指定诸如颜色和线宽等属性，用CGPath来定义想要绘制的图形，最后CAShapeLayer就自动渲染出来了。当然，你也可以用Core Graphics直接向原始的CALyer的内容中绘制一个路径，相比直下，使用CAShapeLayer有以下一些优点：</p>
+<ul>
+<li>渲染快速。CAShapeLayer使用了硬件加速，绘制同一图形会比用Core Graphics快很多。</li>
+<li>高效使用内存。一个CAShapeLayer不需要像普通CALayer一样创建一个寄宿图形，所以无论有多大，都不会占用太多的内存。</li>
+<li>不会被图层边界剪裁掉。一个CAShapeLayer可以在边界之外绘制。你的图层路径不会像在使用Core Graphics的普通CALayer一样被剪裁掉（如我们在第二章所见）。</li>
+<li>不会出现像素化。当你给CAShapeLayer做3D变换时，它不像一个有寄宿图的普通图层一样变得像素化。</li>
+</ul>
+<h2 id="创建一个CGPath"><a href="#创建一个CGPath" class="headerlink" title="创建一个CGPath"></a>创建一个CGPath</h2><p>CAShapeLayer可以用来绘制所有能够通过CGPath来表示的形状。这个形状不一定要闭合，图层路径也不一定要不可破，事实上你可以在一个图层上绘制好几个不同的形状。你可以控制一些属性比如lineWith（线宽，用点表示单位），lineCap（线条结尾的样子），和lineJoin（线条之间的结合点的样子）；但是在图层层面你只有一次机会设置这些属性。如果你想用不同颜色或风格来绘制多个形状，就不得不为每个形状准备一个图层了。</p>
+<p>清单6.1 的代码用一个CAShapeLayer渲染一个简单的火柴人。CAShapeLayer属性是CGPathRef类型，但是我们用UIBezierPath帮助类创建了图层路径，这样我们就不用考虑人工释放CGPath了。图6.1是代码运行的结果。虽然还不是很完美，但是总算知道了大意对吧！</p>
+<p>清单6.1 用CAShapeLayer绘制一个火柴人</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"DrawingView.h"</span></span></span><br><span class="line"><span class="meta">#import </span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="keyword">IBOutlet</span> <span class="built_in">UIView</span> *containerView;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad</span><br><span class="line">&#123;</span><br><span class="line">  [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">  <span class="comment">//create path</span></span><br><span class="line">  <span class="built_in">UIBezierPath</span> *path = [[<span class="built_in">UIBezierPath</span> alloc] init];</span><br><span class="line">  [path moveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">175</span>, <span class="number">100</span>)];</span><br><span class="line">  </span><br><span class="line">  [path addArcWithCenter:<span class="built_in">CGPointMake</span>(<span class="number">150</span>, <span class="number">100</span>) radius:<span class="number">25</span> startAngle:<span class="number">0</span> endAngle:<span class="number">2</span>*M_PI clockwise:<span class="literal">YES</span>];</span><br><span class="line">  [path moveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">150</span>, <span class="number">125</span>)];</span><br><span class="line">  [path addLineToPoint:<span class="built_in">CGPointMake</span>(<span class="number">150</span>, <span class="number">175</span>)];</span><br><span class="line">  [path addLineToPoint:<span class="built_in">CGPointMake</span>(<span class="number">125</span>, <span class="number">225</span>)];</span><br><span class="line">  [path moveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">150</span>, <span class="number">175</span>)];</span><br><span class="line">  [path addLineToPoint:<span class="built_in">CGPointMake</span>(<span class="number">175</span>, <span class="number">225</span>)];</span><br><span class="line">  [path moveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">100</span>, <span class="number">150</span>)];</span><br><span class="line">  [path addLineToPoint:<span class="built_in">CGPointMake</span>(<span class="number">200</span>, <span class="number">150</span>)];</span><br><span class="line"></span><br><span class="line">  <span class="comment">//create shape layer</span></span><br><span class="line">  <span class="built_in">CAShapeLayer</span> *shapeLayer = [<span class="built_in">CAShapeLayer</span> layer];</span><br><span class="line">  shapeLayer.strokeColor = [<span class="built_in">UIColor</span> redColor].CGColor;</span><br><span class="line">  shapeLayer.fillColor = [<span class="built_in">UIColor</span> clearColor].CGColor;</span><br><span class="line">  shapeLayer.lineWidth = <span class="number">5</span>;</span><br><span class="line">  shapeLayer.lineJoin = kCALineJoinRound;</span><br><span class="line">  shapeLayer.lineCap = kCALineCapRound;</span><br><span class="line">  shapeLayer.path = path.CGPath;</span><br><span class="line">  <span class="comment">//add it to our view</span></span><br><span class="line">  [<span class="keyword">self</span>.containerView.layer addSublayer:shapeLayer];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/ios-core-animation/5.23.jpeg" alt="图6.1 用CAShapeLayer绘制一个简单的火柴人"></p>
+<h2 id="圆角"><a href="#圆角" class="headerlink" title="圆角"></a>圆角</h2><p>第二章里面提到了CAShapeLayer为创建圆角视图提供了一个方法，就是CALayer的cornerRadius属性（译者注：其实是在第四章提到的）。虽然使用CAShapeLayer类需要更多的工作，但是它有一个优势就是可以<strong>单独指定每个角</strong>。</p>
+<p>我们创建圆角矩形其实就是人工绘制单独的直线和弧度，但是事实上UIBezierPath有自动绘制圆角矩形的构造方法，下面这段代码绘制了一个有三个圆角一个直角的矩形：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//define path parameters</span></span><br><span class="line"><span class="built_in">CGRect</span> rect = <span class="built_in">CGRectMake</span>(<span class="number">50</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line"><span class="built_in">CGSize</span> radii = <span class="built_in">CGSizeMake</span>(<span class="number">20</span>, <span class="number">20</span>);</span><br><span class="line"><span class="built_in">UIRectCorner</span> corners = <span class="built_in">UIRectCornerTopRight</span> | <span class="built_in">UIRectCornerBottomRight</span> | <span class="built_in">UIRectCornerBottomLeft</span>;</span><br><span class="line"><span class="comment">//create path</span></span><br><span class="line"><span class="built_in">UIBezierPath</span> *path = [<span class="built_in">UIBezierPath</span> bezierPathWithRoundedRect:rect byRoundingCorners:corners cornerRadii:radii];</span><br></pre></td></tr></table></figure>
+<p>我们可以通过这个图层路径绘制一个既有直角又有圆角的视图。如果我们想依照此图形来剪裁视图内容，我们可以把CAShapeLayer作为视图的宿主图层，而不是添加一个子视图（图层蒙板的详细解释见第四章『视觉效果』）。</p>
+<h1 id="CATextLayer"><a href="#CATextLayer" class="headerlink" title="CATextLayer"></a>CATextLayer</h1><h1 id="CATransformLayer"><a href="#CATransformLayer" class="headerlink" title="CATransformLayer"></a>CATransformLayer</h1><h1 id="CAGradientLayer"><a href="#CAGradientLayer" class="headerlink" title="CAGradientLayer"></a>CAGradientLayer</h1><h1 id="CAReplicatorLayer"><a href="#CAReplicatorLayer" class="headerlink" title="CAReplicatorLayer"></a>CAReplicatorLayer</h1><h1 id="CAScrollLayer"><a href="#CAScrollLayer" class="headerlink" title="CAScrollLayer"></a>CAScrollLayer</h1><h1 id="CATiledLayer"><a href="#CATiledLayer" class="headerlink" title="CATiledLayer"></a>CATiledLayer</h1><h1 id="CAEmitterLayer"><a href="#CAEmitterLayer" class="headerlink" title="CAEmitterLayer"></a>CAEmitterLayer</h1><h1 id="CAEAGLLayer"><a href="#CAEAGLLayer" class="headerlink" title="CAEAGLLayer"></a>CAEAGLLayer</h1><h1 id="AVPlayerLayer"><a href="#AVPlayerLayer" class="headerlink" title="AVPlayerLayer"></a>AVPlayerLayer</h1><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/核心动画/" rel="tag">#核心动画</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/09/design-pattern/design-pattern-principle-5/" rel="next" title="设计模式原则-迪米特法则">
+                <i class="fa fa-chevron-left"></i> 设计模式原则-迪米特法则
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/10/ios-core-animation/ios-core-animation-chapter-5/" rel="prev" title="核心动画-变换">
+                核心动画-变换 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/xirong.jpg"
+               alt="JackCat" />
+          <p class="site-author-name" itemprop="name">JackCat</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CAShapeLayer"><span class="nav-number">2.</span> <span class="nav-text">CAShapeLayer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个CGPath"><span class="nav-number">2.1.</span> <span class="nav-text">创建一个CGPath</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#圆角"><span class="nav-number">2.2.</span> <span class="nav-text">圆角</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CATextLayer"><span class="nav-number">3.</span> <span class="nav-text">CATextLayer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CATransformLayer"><span class="nav-number">4.</span> <span class="nav-text">CATransformLayer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CAGradientLayer"><span class="nav-number">5.</span> <span class="nav-text">CAGradientLayer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CAReplicatorLayer"><span class="nav-number">6.</span> <span class="nav-text">CAReplicatorLayer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CAScrollLayer"><span class="nav-number">7.</span> <span class="nav-text">CAScrollLayer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CATiledLayer"><span class="nav-number">8.</span> <span class="nav-text">CATiledLayer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CAEmitterLayer"><span class="nav-number">9.</span> <span class="nav-text">CAEmitterLayer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CAEAGLLayer"><span class="nav-number">10.</span> <span class="nav-text">CAEAGLLayer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AVPlayerLayer"><span class="nav-number">11.</span> <span class="nav-text">AVPlayerLayer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">12.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2018 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JackCat</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="powered-by">
+   浙ICP备18009234号
+</div>
+
+<div class="theme-info">
+  Clone theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next/">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.3/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HfEUHBkxIxPKFFWsM8E29K81-gzGzoHsz", "j8gTHCF5cxmeGRbV0QIujeUw");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>

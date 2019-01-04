@@ -1,0 +1,806 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="核心动画," />
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言 巨妖有图层，洋葱也有图层，你有吗？我们都有图层 – 史莱克  Core Animation其实是一个令人误解的命名。你可能认为它只是用来做动画的，但实际上它是从一个叫做Layer Kit这么一个不怎么和动画有关的名字演变而来，所以做动画这只是Core Animation特性的冰山一角。  Core Animation是一个复合引擎，它的职责就是尽可能快地组合屏幕上不同的可视内容，这个内容是被">
+<meta name="keywords" content="核心动画">
+<meta property="og:type" content="article">
+<meta property="og:title" content="核心动画-图层树">
+<meta property="og:url" content="http://blog.devjackcat.com/2017/04/06/ios-core-animation/ios-core-animation-chapter-1/index.html">
+<meta property="og:site_name" content="JackCat">
+<meta property="og:description" content="前言 巨妖有图层，洋葱也有图层，你有吗？我们都有图层 – 史莱克  Core Animation其实是一个令人误解的命名。你可能认为它只是用来做动画的，但实际上它是从一个叫做Layer Kit这么一个不怎么和动画有关的名字演变而来，所以做动画这只是Core Animation特性的冰山一角。  Core Animation是一个复合引擎，它的职责就是尽可能快地组合屏幕上不同的可视内容，这个内容是被">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/1.1.jpeg">
+<meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/1.2.jpeg">
+<meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/1.3.jpeg">
+<meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/1.4.jpeg">
+<meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/1.5.jpeg">
+<meta property="og:updated_time" content="2018-09-16T13:01:07.741Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="核心动画-图层树">
+<meta name="twitter:description" content="前言 巨妖有图层，洋葱也有图层，你有吗？我们都有图层 – 史莱克  Core Animation其实是一个令人误解的命名。你可能认为它只是用来做动画的，但实际上它是从一个叫做Layer Kit这么一个不怎么和动画有关的名字演变而来，所以做动画这只是Core Animation特性的冰山一角。  Core Animation是一个复合引擎，它的职责就是尽可能快地组合屏幕上不同的可视内容，这个内容是被">
+<meta name="twitter:image" content="http://blog.devjackcat.com/images/ios-core-animation/1.1.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'xirong'
+    }
+  };
+</script>
+
+  <title> 核心动画-图层树 | JackCat </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">JackCat</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                核心动画-图层树
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-06T12:26:45+08:00" content="2017-04-06">
+              2017-04-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/04/06/ios-core-animation/ios-core-animation-chapter-1/" class="leancloud_visitors" data-flag-title="核心动画-图层树">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
+<p>巨妖有图层，洋葱也有图层，你有吗？我们都有图层 – 史莱克</p>
+</blockquote>
+<p>Core Animation其实是一个令人误解的命名。你可能认为它只是用来做动画的，但实际上它是从一个叫做Layer Kit这么一个不怎么和动画有关的名字演变而来，所以做动画这只是Core Animation特性的冰山一角。</p>
+<p> Core Animation是一个复合引擎，它的职责就是尽可能快地组合屏幕上不同的可视内容，这个内容是被分解成独立的图层，存储在一个叫做图层树的体系之中。于是这个树形成了UIKit以及在iOS应用程序当中你所能在屏幕上看见的一切的基础。</p>
+<p>在我们讨论动画之前，我们将从图层树开始，涉及一下Core Animation的静态组合以及布局特性。</p>
+<h1 id="图层与视图"><a href="#图层与视图" class="headerlink" title="图层与视图"></a>图层与视图</h1><p>如果你曾经在iOS或者Mac OS平台上写过应用程序，你可能会对视图的概念比较熟悉。一个视图就是在屏幕上显示的一个矩形块（比如图片，文字或者视频），它能够拦截类似于鼠标点击或者触摸手势等用户输入。视图在层级关系中可以互相嵌套，一个视图可以管理它的所有子视图的位置。图1.1显示了一种典型的视图层级关系</p>
+<p><img src="/images/ios-core-animation/1.1.jpeg" alt="图1.1 一种典型的iOS屏幕（左边）和形成视图的层级关系（右边）"></p>
+<p>在iOS当中，所有的视图都从一个叫做UIVIew的基类派生而来，UIView可以处理触摸事件，可以支持基于Core Graphics绘图，可以做仿射变换（例如旋转或者缩放），或者简单的类似于滑动或者渐变的动画。</p>
+<h2 id="CALayer"><a href="#CALayer" class="headerlink" title="CALayer"></a>CALayer</h2><p>CALayer类在概念上和UIView类似，同样也是一些被层级关系树管理的矩形块，同样也可以包含一些内容（像图片，文本或者背景色），管理子图层的位置。它们有一些方法和属性用来做动画和变换。和UIView最大的不同是CALayer不处理用户的交互。</p>
+<p>CALayer并不清楚具体的响应链（iOS通过视图层级关系用来传送触摸事件的机制），于是它并不能够响应事件，即使它提供了一些方法来判断是否一个触点在图层的范围之内（具体见第三章，“图层的几何学”）</p>
+<h2 id="平行的层级关系"><a href="#平行的层级关系" class="headerlink" title="平行的层级关系"></a>平行的层级关系</h2><p>每一个UIview都有一个CALayer实例的图层属性，也就是所谓的backing layer，视图的职责就是创建并管理这个图层，以确保当子视图在层级关系中添加或者被移除的时候，他们关联的图层也同样对应在层级关系树当中有相同的操作（见图1.2）。 </p>
+<p><img src="/images/ios-core-animation/1.2.jpeg" alt="图1.2 层的树状结构（左边）以及对应的视图层级（右边）"></p>
+<p>实际上这些背后关联的图层才是真正用来在屏幕上显示和做动画，UIView仅仅是对它的一个封装，提供了一些iOS类似于处理触摸的具体功能，以及Core Animation底层方法的高级接口。</p>
+<p>但是为什么iOS要基于UIView和CALayer提供两个平行的层级关系呢？为什么不用一个简单的层级来处理所有事情呢？原因在于要做职责分离，这样也能避免很多重复代码。在iOS和Mac OS两个平台上，事件和用户交互有很多地方的不同，基于多点触控的用户界面和基于鼠标键盘有着本质的区别，这就是为什么iOS有UIKit和UIView，但是Mac OS有AppKit和NSView的原因。他们功能上很相似，但是在实现上有着显著的区别。</p>
+<p>绘图，布局和动画，相比之下就是类似Mac笔记本和桌面系列一样应用于iPhone和iPad触屏的概念。把这种功能的逻辑分开并应用到独立的Core Animation框架，苹果就能够在iOS和Mac OS之间共享代码，使得对苹果自己的OS开发团队和第三方开发者去开发两个平台的应用更加便捷。</p>
+<p>实际上，这里并不是两个层级关系，而是四个，每一个都扮演不同的角色，除了视图层级和图层树之外，还存在呈现树和渲染树，将在第七章“隐式动画”和第十二章“性能调优”分别讨论。</p>
+<h1 id="图层的能力"><a href="#图层的能力" class="headerlink" title="图层的能力"></a>图层的能力</h1><p>如果说CALayer是UIView内部实现细节，那我们为什么要全面地了解它呢？苹果当然为我们提供了优美简洁的UIView接口，那么我们是否就没必要直接去处理Core Animation的细节了呢？</p>
+<p>某种意义上说的确是这样，对一些简单的需求来说，我们确实没必要处理CALayer，因为苹果已经通过UIView的高级API间接地使得动画变得很简单。</p>
+<p>但是这种简单会不可避免地带来一些灵活上的缺陷。如果你略微想在底层做一些改变，或者使用一些苹果没有在UIView上实现的接口功能，这时除了介入Core Animation底层之外别无选择。</p>
+<p>我们已经证实了图层不能像视图那样处理触摸事件，那么他能做哪些视图不能做的呢？这里有一些UIView没有暴露出来的CALayer的功能：</p>
+<ul>
+<li>阴影，圆角，带颜色的边框</li>
+<li>3D变换</li>
+<li>非矩形范围</li>
+<li>透明遮罩</li>
+<li>多级非线性动画</li>
+</ul>
+<p>我们将会在后续章节中探索这些功能，首先我们要关注一下在应用程序当中CALayer是怎样被利用起来的。</p>
+<h1 id="使用图层"><a href="#使用图层" class="headerlink" title="使用图层"></a>使用图层</h1><p>首先我们来创建一个简单的项目，来操纵一些layer的属性。打开Xcode，使用Single View Application模板创建一个工程。</p>
+<p>在屏幕中央创建一个小视图（大约200 X 200的尺寸），当然你可以手工编码，或者使用Interface Builder（随你方便）。确保你的视图控制器要添加一个视图的属性以便可以直接访问它。我们把它称作layerView。</p>
+<p>运行项目，应该能在浅灰色屏幕背景中看见一个白色方块（图1.3），如果没看见，可能需要调整一下背景window或者view的颜色</p>
+<p><img src="/images/ios-core-animation/1.3.jpeg" alt="图1.3 灰色背景上的一个白色UIView"></p>
+<p>这并没有什么令人激动的地方，我们来添加一个色块，在白色方块中间添加一个小的蓝色块。</p>
+<p>我们当然可以简单地在已经存在的UIView上添加一个子视图（随意用代码或者IB），但这不能真正学到任何关于图层的东西。</p>
+<p>于是我们来创建一个CALayer，并且把它作为我们视图相关图层的子图层。尽管UIView类的接口中暴露了图层属性，但是标准的Xcode项目模板并没有包含Core Animation相关头文件。所以如果我们不给项目添加合适的库，是不能够使用任何图层相关的方法或者访问它的属性。所以首先需要添加QuartzCore框架到Build Phases标签（图1.4），然后在vc的.m文件中引入库。</p>
+<p><img src="/images/ios-core-animation/1.4.jpeg" alt="图1.4 把QuartzCore库添加到项目"></p>
+<p>之后就可以在代码中直接引用CALayer的属性和方法。在清单1.1中，我们用创建了一个CALayer，设置了它的backgroundColor属性，然后添加到layerView背后相关图层的子图层（这段代码的前提是通过IB创建了layerView并做好了连接），图1.5显示了结果。</p>
+<p>清单1.1 给视图添加一个蓝色子图层</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"ViewController.h"</span></span></span><br><span class="line"><span class="meta">#import </span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="keyword">IBOutlet</span> <span class="built_in">UIView</span> *layerView;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="comment">//create sublayer</span></span><br><span class="line">    <span class="built_in">CALayer</span> *blueLayer = [<span class="built_in">CALayer</span> layer];</span><br><span class="line">    blueLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">50.0</span>f, <span class="number">50.0</span>f, <span class="number">100.0</span>f, <span class="number">100.0</span>f);</span><br><span class="line">    blueLayer.backgroundColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</span><br><span class="line">    <span class="comment">//add it to our view</span></span><br><span class="line">    [<span class="keyword">self</span>.layerView.layer addSublayer:blueLayer];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/ios-core-animation/1.5.jpeg" alt="图1.5 白色UIView内部嵌套的蓝色CALayer"></p>
+<p>一个视图只有一个相关联的图层（自动创建），同时它也可以支持添加无数多个子图层，从清单1.1可以看出，你可以显示创建一个单独的图层，并且把它直接添加到视图关联图层的子图层。尽管可以这样添加图层，但往往我们只是见简单地处理视图，他们关联的图层并不需要额外地手动添加子图层。</p>
+<p>在Mac OS平台，10.8版本之前，一个显著的性能缺陷就是由于用了视图层级而不是单独在一个视图内使用CALayer树状层级。但是在iOS平台，使用轻量级的UIView类并没有显著的性能影响（当然在Mac OS 10.8之后，NSView的性能同样也得到很大程度的提高）。</p>
+<p>使用图层关联的视图而不是CALayer的好处在于，你能在使用所有CALayer底层特性的同时，也可以使用UIView的高级API（比如自动排版，布局和事件处理）。</p>
+<p>然而，当满足以下条件的时候，你可能更需要使用CALayer而不是UIView:</p>
+<ul>
+<li>开发同时可以在Mac OS上运行的跨平台应用</li>
+<li>使用多种CALayer的子类（见第六章，“特殊的图层“），并且不想创建额外的UIView去包封装它们所有</li>
+<li>做一些对性能特别挑剔的工作，比如对UIView一些可忽略不计的操作都会引起显著的不同（尽管如此，你可能会直接想使用OpenGL绘图）</li>
+</ul>
+<p>但是这些例子都很少见，总的来说，处理视图会比单独处理图层更加方便。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这一章阐述了图层的树状结构，说明了如何在iOS中由UIView的层级关系形成的一种平行的CALayer层级关系，在后面的实验中，我们创建了自己的CALayer，并把它添加到图层树中。</p>
+<p>在第二章，“图层关联的图片”，我们将要研究一下CALayer关联的图片，以及Core Animation提供的操作显示的一些特性。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/核心动画/" rel="tag">#核心动画</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/06/ios-core-animation/ios-core-animation/" rel="next" title="核心动画-目录">
+                <i class="fa fa-chevron-left"></i> 核心动画-目录
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/06/ios-core-animation/ios-core-animation-chapter-2/" rel="prev" title="核心动画-寄宿图">
+                核心动画-寄宿图 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/xirong.jpg"
+               alt="JackCat" />
+          <p class="site-author-name" itemprop="name">JackCat</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#图层与视图"><span class="nav-number">2.</span> <span class="nav-text">图层与视图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CALayer"><span class="nav-number">2.1.</span> <span class="nav-text">CALayer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#平行的层级关系"><span class="nav-number">2.2.</span> <span class="nav-text">平行的层级关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#图层的能力"><span class="nav-number">3.</span> <span class="nav-text">图层的能力</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用图层"><span class="nav-number">4.</span> <span class="nav-text">使用图层</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2018 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JackCat</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="powered-by">
+   浙ICP备18009234号
+</div>
+
+<div class="theme-info">
+  Clone theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next/">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.3/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HfEUHBkxIxPKFFWsM8E29K81-gzGzoHsz", "j8gTHCF5cxmeGRbV0QIujeUw");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>

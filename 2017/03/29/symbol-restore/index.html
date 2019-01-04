@@ -1,0 +1,873 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="逆向工程," />
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="关于本文本文是杨君的著作。 原文地址:  http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/ 前言符号表历来是逆向工程中的“必争之地”，而iOS应用在上线前都会裁去符号表，以避免被逆向分析。 本">
+<meta name="keywords" content="逆向工程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS符号表恢复&amp;逆向支付宝">
+<meta property="og:url" content="http://blog.devjackcat.com/2017/03/29/symbol-restore/index.html">
+<meta property="og:site_name" content="JackCat">
+<meta property="og:description" content="关于本文本文是杨君的著作。 原文地址:  http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/ 前言符号表历来是逆向工程中的“必争之地”，而iOS应用在上线前都会裁去符号表，以避免被逆向分析。 本">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/after_restore.jpg">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/before_restore.jpg">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/symbol_table.jpg">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/class_dump_imp.png">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/restore_size.jpg">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/restore_only_oc.jpg">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/example_stack_block.jpg">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/example_stack_block_strip.jpg">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/example_global_block.jpeg">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/ida_select_script.jpg">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/ida_script_running.jpg">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/ida_result_position.png">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/ida_result_sample.jpg">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/xcode_breakpoint.jpg">
+<meta property="og:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/xcode_backtrace.jpg">
+<meta property="og:updated_time" content="2018-09-16T13:01:07.745Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS符号表恢复&amp;逆向支付宝">
+<meta name="twitter:description" content="关于本文本文是杨君的著作。 原文地址:  http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/ 前言符号表历来是逆向工程中的“必争之地”，而iOS应用在上线前都会裁去符号表，以避免被逆向分析。 本">
+<meta name="twitter:image" content="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/after_restore.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'xirong'
+    }
+  };
+</script>
+
+  <title> iOS符号表恢复&逆向支付宝 | JackCat </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">JackCat</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS符号表恢复&逆向支付宝
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-29T09:14:22+08:00" content="2017-03-29">
+              2017-03-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/03/29/symbol-restore/" class="leancloud_visitors" data-flag-title="iOS符号表恢复&逆向支付宝">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="关于本文"><a href="#关于本文" class="headerlink" title="关于本文"></a>关于本文</h3><p>本文是杨君的著作。</p>
+<p>原文地址:  <a href="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/" target="_blank" rel="noopener">http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/</a></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>符号表历来是逆向工程中的“必争之地”，而iOS应用在上线前都会裁去符号表，以避免被逆向分析。</p>
+<p>本文会介绍一个自己写的工具，用于恢复iOS应用的符号表。</p>
+<p>直接看效果,支付宝恢复符号表后的样子:</p>
+<p><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/after_restore.jpg" alt=""></p>
+<p>文章有点长，请耐心看到最后，亮点在最后。</p>
+<h3 id="为什么要恢复符号表"><a href="#为什么要恢复符号表" class="headerlink" title="为什么要恢复符号表"></a>为什么要恢复符号表</h3><p>逆向工程中，调试器的动态分析是必不可少的，而 Xcode + lldb 确实是非常好的调试利器, 比如我们在Xcode里可以很方便的查看调用堆栈，如上面那张图可以很清晰的看到支付宝登录的RPC调用过程。</p>
+<p>实际上，如果我们不恢复符号表的话，你看到的调试页面应该是下面这个样子：</p>
+<p><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/before_restore.jpg" alt=""></p>
+<p>同一个函数调用过程，Xcode的显示简直天差地别。</p>
+<p>原因是，Xcode显示调用堆栈中符号时，只会显示符号表中有的符号。为了我们调试过程的顺利，我们有必要把可执行文件中的符号表恢复回来。</p>
+<h3 id="符号表是什么"><a href="#符号表是什么" class="headerlink" title="符号表是什么"></a>符号表是什么</h3><p>我们要恢复符号表，首先要知道符号表是什么，他是怎么存在于 Mach-O 文件中的。</p>
+<p>符号表储存在 Mach-O 文件的 __LINKEDIT 段中，涉及其中的符号表（Symbol Table）和字符串表（String Table）。</p>
+<p>这里我们用 MachOView 打开支付宝的可执行文件，找到其中的 Symbol Table 项。</p>
+<p><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/symbol_table.jpg" alt=""></p>
+<p>符号表的结构是一个连续的列表，其中的每一项都是一个 <code>struct nlist</code>。</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/<span class="regexp">/  位于系统库 &lt;macho-o/nlist</span>.h&gt; 头文件中</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">nlist</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">  /<span class="regexp">/符号名在字符串表中的偏移量</span></span><br><span class="line"><span class="regexp">    uint32_t n_strx;	</span></span><br><span class="line"><span class="regexp">  &#125; n_un;</span></span><br><span class="line"><span class="regexp">  uint8_t n_type;</span></span><br><span class="line"><span class="regexp">  uint8_t n_sect;</span></span><br><span class="line"><span class="regexp">  int16_t n_desc;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/符号在内存中的地址，类似于函数指针</span></span><br><span class="line"><span class="regexp">  uint32_t n_value;</span></span><br><span class="line"><span class="regexp">&#125;;</span></span><br></pre></td></tr></table></figure>
+<p>这里重点关注第一项和最后一项，第一项是符号名在字符串表中的偏移量，用于表示函数名，最后一项是符号在内存中的地址，类似于函数指针（这里只说明大概的结构，详细的信息请参考官方Mach O文件格式的文档）。</p>
+<p>也就是说如果我们知道了符号名和内存地址的对应关系，我们是可以根据这个结构来逆向构造出符号表数据的。</p>
+<p>知道了如何构造符号表，下一步就是收集符号名和内存地址的对应关系了。</p>
+<h3 id="获取OC方法的符号表"><a href="#获取OC方法的符号表" class="headerlink" title="获取OC方法的符号表"></a>获取OC方法的符号表</h3><p>因为OC语言的特性，编译器会将类名、函数名等编译进最后的可执行文件中，所以我们可以根据Mach-O文件的结构逆向还原出工程里的所有类，这也就是大名鼎鼎的逆向工具 class-dump 了。class-dump 出来的头文件里是有函数地址的：</p>
+<p><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/class_dump_imp.png" alt=""></p>
+<p>所以我们只要对class-dump的源码稍作修改，即可获取我们要的信息。</p>
+<h3 id="符号表恢复工具"><a href="#符号表恢复工具" class="headerlink" title="符号表恢复工具"></a>符号表恢复工具</h3><p>整理完数据格式，又理清了数据来源，我们就可以写工具了。</p>
+<p>实现过程就不详细说明了，工具开源在我的Github上了，链接：<br><a href="https://github.com/tobefuturer/restore-symbol" target="_blank" rel="noopener">https://github.com/tobefuturer/restore-symbol</a></p>
+<p>我们来看看怎么用这个工具：</p>
+<p><strong>1.下载源码编译</strong></p>
+<figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone --recursive https://github.com/tobefuturer/<span class="built_in">restore</span>-symbol.git</span><br><span class="line"><span class="built_in">cd</span> <span class="built_in">restore</span>-symbol &amp;&amp; make</span><br><span class="line">./<span class="built_in">restore</span>-symbol</span><br></pre></td></tr></table></figure>
+<p><strong>2.恢复OC的符号表，非常简单</strong></p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">./restore-symbol</span> <span class="string">./origin_AlipayWallet</span> -o <span class="string">./AlipayWallet_with_symbol</span></span><br></pre></td></tr></table></figure>
+<p>origin_AlipayWallet 为Clutch砸壳后，没有符号表的 Mach-O 文件<br>-o 后面跟输出文件位置</p>
+<p><strong>3.把 Mach-O 文件重签名打包，看效果</strong></p>
+<p>文件恢复符号表后，多出了20M的符号表信息</p>
+<p><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/restore_size.jpg" alt=""></p>
+<p>Xcode里查看调用栈</p>
+<p><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/restore_only_oc.jpg" alt=""></p>
+<p>可以看到，OC函数这部分的符号已经恢复了，函数调用栈里已经能看出大致的调用过程了，但是支付宝里，采用了block的回调形式，所以还有很大一部分的符号没能正确显示。</p>
+<p>下面我们就来看看怎么样恢复这部分block的符号。</p>
+<h3 id="获取block的符号信息"><a href="#获取block的符号信息" class="headerlink" title="获取block的符号信息"></a>获取block的符号信息</h3><p>还是同样的思路，要恢复block的符号信息，我们必须知道block在文件中的储存形式。</p>
+<h3 id="block在内存中的结构"><a href="#block在内存中的结构" class="headerlink" title="block在内存中的结构"></a>block在内存中的结构</h3><p>首先，我们先分析下运行时，block在内存中的存在形式。block在内存中是以一个结构体的形式存在的，大致的结构如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">block_impl</span> &#123;</span></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">  block在内存中也是类NSObject的结构体，</span></span><br><span class="line"><span class="comment">  结构体开始位置是一个isa指针</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  Class isa;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">/** 这两个变量暂时不关心 */</span></span><br><span class="line">  <span class="keyword">int</span> flags;</span><br><span class="line">  <span class="keyword">int</span> reserved;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">  真正的函数指针！！</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  <span class="keyword">void</span> (*invoke)(...);</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>说明下block中的isa指针，根据实际情况会有三种不同的取值，来表示不同类型的block：</p>
+<ul>
+<li><p>_NSConcreteStackBlock</p>
+<p>  栈上的block，一般block创建时是在栈上分配了一个block结构体的空间，然后对其中的isa等变量赋值。</p>
+</li>
+<li><p>_NSConcreteMallocBlock</p>
+<p>  堆上的block，当block被加入到GCD或者被对象持有时，将栈上的block复制到堆上，此时复制得到的block类型变为了_NSConcreteMallocBlock。</p>
+</li>
+<li><p>_NSConcreteGlobalBlock</p>
+<p>  全局静态的block，当block不依赖于上下文环境，比如不持有block外的变量、只使用block内部的变量的时候，block的内存分配可以在编译期就完成，分配在全局的静态常量区。</p>
+</li>
+</ul>
+<p>第2种block在运行时才会出现，我们只关注1、3两种，下面就分析这两种isa指针和block符号地址之间的关联。</p>
+<h3 id="block-isa指针和符号地址之间的关联"><a href="#block-isa指针和符号地址之间的关联" class="headerlink" title="block isa指针和符号地址之间的关联"></a>block isa指针和符号地址之间的关联</h3><p>分析这部分需要用到IDA这个反汇编软件, 这里结合两个实际的小例子来说明：</p>
+<p><strong>1._NSConcreteStackBlock</strong></p>
+<p>假设我们的源代码是这样很简单的一个block：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    <span class="keyword">int</span> t = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">void</span> (^ foo)() = ^()&#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%d"</span>, t); <span class="comment">//block 引用了外部的变量t</span></span><br><span class="line">    &#125;;</span><br><span class="line">    foo();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>编译完后，实际的汇编长这个样子：<br><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/example_stack_block.jpg" alt=""></p>
+<p>实际运行时，block的构造过程是这样：</p>
+<ol>
+<li>为block开辟栈空间</li>
+<li>为block的isa指针赋值（一定会引用全局变量：_NSConcreteStackBlock）</li>
+<li>获取函数地址，赋值给函数指针</li>
+</ol>
+<p>所以我们可以整理出这样一个特征：</p>
+<p><em>重点来了!!!</em></p>
+<p><em>凡是代码里用到了栈上的block，一定会获取__NSConcreteStackBlock作为isa指针，同时会紧接着获取一个函数地址，那个函数地址就是block的函数地址。</em></p>
+<p>结合下面这个图，仔细理解上面这句话<br>（这张图和上面那张图是同一个文件，不过裁掉了符号表）<br><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/example_stack_block_strip.jpg" alt=""></p>
+<p>利用这个特征，逆向分析时我们可以做如下推断：</p>
+<p>在一个OC方法里发现引用了__NSConcreteStackBlock这个变量，那么在这附近，一定会出现一个函数地址，这个函数地址就是这个OC方法里的一个block。</p>
+<p>比如上面图中，我们发现 viewDidLoad 里，引用了__NSConcreteStackBlock,同时紧接着加载了 sub_100049D4 的函数地址，那我们就可以认定sub_100049D4是viewDidLoad里的一个block, sub_100049D4函数的符号名应该是 viewDidLoad_block.</p>
+<p><strong>2. _NSConcreteGlobalBlock</strong></p>
+<p>全局的静态block，是那种不引用block外变量的block，他因为不引用外部变量，所以他可以在编译期就进行内存分配操作，也不用担心block的复制等等操作，他存在于可执行文件的常量区里。</p>
+<p>不太理解的话，看个例子：</p>
+<p>我们把源代码改成这样：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">void</span> (^ foo)() = ^()&#123;</span><br><span class="line">        <span class="comment">//block 不引用外部的变量</span></span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%d"</span>, <span class="number">123</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    foo();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>那么在编译后会变成这样：<br><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/example_global_block.jpeg" alt=""></p>
+<p>那么借鉴上面的思路，在逆向分析的时候，我们可以这么推断</p>
+<ol>
+<li>在静态常量区发现一个_NSConcreteGlobalBlock的引用</li>
+<li>这个地方必然存在一个block的结构体数据</li>
+<li>在这个结构体第16个字节的地方会出现一个值，这个值是一个block的函数地址</li>
+</ol>
+<p><strong>3. block 的嵌套结构</strong></p>
+<p>实际在使用中，可能会出现block内嵌block的情况：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">-</span> (void)<span class="selector-tag">viewDidLoad</span> &#123;</span><br><span class="line">  <span class="selector-tag">dispatch_async</span>(background_queue ,^&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="selector-tag">dispatch_async</span>(main_queue, ^&#123;</span><br><span class="line">      ...     </span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所以这里block就出现了父子关系，如果我们将这些父子关系收集起来，就可以发现，这些关系会构成图论里的森林结构，这里可以简单用递归的深度优先搜索来处理，详细过程不再描述。</p>
+<h3 id="block符号表提取脚本（IDA-python）"><a href="#block符号表提取脚本（IDA-python）" class="headerlink" title="block符号表提取脚本（IDA+python）"></a>block符号表提取脚本（IDA+python）</h3><p>整理上面的思路，我们发现搜索过程依赖于IDA提供各种引用信息，而IDA是提供了编程接口的，可以利用这些接口来提取引用信息。</p>
+<p>IDA提供的是Python的SDK，最后完成的脚本也放在仓库里search_oc_block/ida_search_block.py。</p>
+<h3 id="提取block符号表"><a href="#提取block符号表" class="headerlink" title="提取block符号表"></a>提取block符号表</h3><p>这里简单介绍下怎么使用上面这个脚本</p>
+<p>1.用IDA打开支付宝的 Mach-O 文件<br>2.等待分析完成！ 可能要一个小时<br>3.Alt + F7 或者 菜单栏 File -&gt; Script file…</p>
+<p><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/ida_select_script.jpg" alt=""></p>
+<p>4.等待脚本运行完成，预计30s至60s，运行过程中会有这样的弹窗</p>
+<p><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/ida_script_running.jpg" alt=""></p>
+<p>5.弹窗消失即block符号表提取完成<br>6.在IDA打开文件的目录下,会输出一份名为block_symbol.json的json格式block符号表</p>
+<p><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/ida_result_position.png" alt=""></p>
+<p><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/ida_result_sample.jpg" alt=""></p>
+<h3 id="恢复符号表-amp-实际分析"><a href="#恢复符号表-amp-实际分析" class="headerlink" title="恢复符号表&amp;实际分析"></a>恢复符号表&amp;实际分析</h3><p>用之前的符号表恢复工具，将block的符号表导入Mach-O文件</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">./restore-symbol</span> <span class="string">./origin_AlipayWallet</span> -o <span class="string">./AlipayWallet_with_symbol</span> -j block_symbol.json</span><br></pre></td></tr></table></figure>
+<p>-j 后面跟上之前得到的json符号表</p>
+<p>最后得到一份同时具有OC函数符号表和block符号表的可执行文件</p>
+<p>这里简单介绍一个分析案例, 你就能体会到这个工具的强大之处了。</p>
+<p>1.在Xcode里对 -[UIAlertView show] 设置断点<br><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/xcode_breakpoint.jpg" alt=""></p>
+<p>2.运行程序，并在支付宝的登录页面输入手机号和错误的密码，点击登录<br>3.Xcode会在‘密码错误’的警告框弹出时停下，左侧会显示出这样的调用栈</p>
+<p><em>一张图看完支付宝的登录过程</em></p>
+<p><img src="http://blog.imjun.net/2016/08/25/iOS%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%81%A2%E5%A4%8D-%E9%80%86%E5%90%91%E6%94%AF%E4%BB%98%E5%AE%9D/xcode_backtrace.jpg" alt=""></p>
+<p>项目开源地址：<br><a href="https://github.com/tobefuturer/restore-symbol" target="_blank" rel="noopener">https://github.com/tobefuturer/restore-symbol</a></p>
+<p>欢迎大家在上面提各种Issues，或者有问题也可以直接Email（<a href="mailto:tobefuturer@gmail.com" target="_blank" rel="noopener">tobefuturer@gmail.com</a>）。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/逆向工程/" rel="tag">#逆向工程</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/25/ssh-setting/" rel="next" title="SSH公钥配置">
+                <i class="fa fa-chevron-left"></i> SSH公钥配置
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/06/ios-core-animation/ios-core-animation/" rel="prev" title="核心动画-目录">
+                核心动画-目录 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/xirong.jpg"
+               alt="JackCat" />
+          <p class="site-author-name" itemprop="name">JackCat</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于本文"><span class="nav-number">1.</span> <span class="nav-text">关于本文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">2.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要恢复符号表"><span class="nav-number">3.</span> <span class="nav-text">为什么要恢复符号表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#符号表是什么"><span class="nav-number">4.</span> <span class="nav-text">符号表是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取OC方法的符号表"><span class="nav-number">5.</span> <span class="nav-text">获取OC方法的符号表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#符号表恢复工具"><span class="nav-number">6.</span> <span class="nav-text">符号表恢复工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取block的符号信息"><span class="nav-number">7.</span> <span class="nav-text">获取block的符号信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#block在内存中的结构"><span class="nav-number">8.</span> <span class="nav-text">block在内存中的结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#block-isa指针和符号地址之间的关联"><span class="nav-number">9.</span> <span class="nav-text">block isa指针和符号地址之间的关联</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#block符号表提取脚本（IDA-python）"><span class="nav-number">10.</span> <span class="nav-text">block符号表提取脚本（IDA+python）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提取block符号表"><span class="nav-number">11.</span> <span class="nav-text">提取block符号表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#恢复符号表-amp-实际分析"><span class="nav-number">12.</span> <span class="nav-text">恢复符号表&amp;实际分析</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2018 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JackCat</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="powered-by">
+   浙ICP备18009234号
+</div>
+
+<div class="theme-info">
+  Clone theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next/">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.3/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HfEUHBkxIxPKFFWsM8E29K81-gzGzoHsz", "j8gTHCF5cxmeGRbV0QIujeUw");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,810 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在几乎每一种计算机程序语言中，解析字符串都是我们不得不面对的问题。有时这些字符串以一种简单的格式出现，有时它们又变得很复杂。我们将利用多种方法把字符串转换成我们需要的东西。下面，我们将讨论正则表达式、扫描器、解析器以及在什么时候使用它们。 正则法 vs. 上下文无关文法（Context-Free Grammars）首先，介绍一点点背景知识：解析一个字符串，其实就是用特定的语言来描述它。例如：把 @">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字符串解析">
+<meta property="og:url" content="http://blog.devjackcat.com/2017/04/17/string-parsing/index.html">
+<meta property="og:site_name" content="JackCat">
+<meta property="og:description" content="在几乎每一种计算机程序语言中，解析字符串都是我们不得不面对的问题。有时这些字符串以一种简单的格式出现，有时它们又变得很复杂。我们将利用多种方法把字符串转换成我们需要的东西。下面，我们将讨论正则表达式、扫描器、解析器以及在什么时候使用它们。 正则法 vs. 上下文无关文法（Context-Free Grammars）首先，介绍一点点背景知识：解析一个字符串，其实就是用特定的语言来描述它。例如：把 @">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-16T13:01:07.744Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="字符串解析">
+<meta name="twitter:description" content="在几乎每一种计算机程序语言中，解析字符串都是我们不得不面对的问题。有时这些字符串以一种简单的格式出现，有时它们又变得很复杂。我们将利用多种方法把字符串转换成我们需要的东西。下面，我们将讨论正则表达式、扫描器、解析器以及在什么时候使用它们。 正则法 vs. 上下文无关文法（Context-Free Grammars）首先，介绍一点点背景知识：解析一个字符串，其实就是用特定的语言来描述它。例如：把 @">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'xirong'
+    }
+  };
+</script>
+
+  <title> 字符串解析 | JackCat </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">JackCat</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                字符串解析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-17T10:28:22+08:00" content="2017-04-17">
+              2017-04-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/04/17/string-parsing/" class="leancloud_visitors" data-flag-title="字符串解析">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在几乎每一种计算机程序语言中，解析字符串都是我们不得不面对的问题。有时这些字符串以一种简单的格式出现，有时它们又变得很复杂。我们将利用多种方法把字符串转换成我们需要的东西。下面，我们将讨论正则表达式、扫描器、解析器以及在什么时候使用它们。</p>
+<h1 id="正则法-vs-上下文无关文法（Context-Free-Grammars）"><a href="#正则法-vs-上下文无关文法（Context-Free-Grammars）" class="headerlink" title="正则法 vs. 上下文无关文法（Context-Free Grammars）"></a>正则法 vs. 上下文无关文法（Context-Free Grammars）</h1><p>首先，介绍一点点背景知识：解析一个字符串，其实就是用特定的语言来描述它。例如：把 @”42” 解析成数字，我们会采用自然数来描述这个字符串。语言都是用语法来描述的，语法其实就是一些规则的集合，这些规则可以用字符串来描述。比如自然数，仅仅有一条规则：字符串的描述就是一个数字序列。这种语言也可以用标准 C 函数或者正则表达式来描述。如果我们用正则表达式来描述一种语言，我们就可以说它有正则语法。</p>
+<p>假设我们有一个表达式：”1 + 2 * 3”，解析它就不容易。像这种表达式，我们可以用归纳语法来描述。换句话说，就是有一种语法，它的规则就是指的是它们自己，有时候甚至是递归的方式。为了识别这种语法，我们有三个规则：</p>
+<ol>
+<li>任何数字都是语言的成员。</li>
+<li>如果 x 是语言的成员，同时 y 也是语言的成员，那么 x+y 也是语言的成员。</li>
+<li>如果 x 是语言的成员，同时 y 也是语言的成员，那么 x*y 也是语言的成员。</li>
+</ol>
+<p>使用这种语法描述的语言称之为<strong>上下文无关文法 (context-free grammars)</strong>，或者简称 CFG 1。需要注意的是这种语法不能使用正则表达式来解析（虽然一些正则表达式能实现，如 PCRE，但这远远超越了一般的正则语法）。一个经典的例子就是括号匹配，它可以用 CFG 来解析，却不能用正则表达式 2。</p>
+<p>像数字，字符串和时间这些，就可以用正则语言来解析。意思是说你可以使用正则表达式（或者相似的技术）去解析它们。</p>
+<p>像邮箱地址，JSON，XML 以及其它大多数的编程语言，都不能够使用正则表达式来解析 3。我们需要一个真正的解析器来解析它们。大多数时候，我们需要的解析器就有现成的。苹果就已经为我们提供了 XML 和 JSON 解析器，如果想要解析 XML 和 JSON，用苹果的就可以了。</p>
+<h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><p>当你想要去识别一些简单的语言时，正则表达式是一个好工具。但是，它们经常被滥用在一些不适合它们的地方，比如 HTML 的解析。现在假定我们有一个文件, 其中包含一个简单的定义颜色的变量,设计者们可以利用该变量来改变你 iPhone app 中的颜色。格式如下:</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">backgroundColor = <span class="comment">#ff0000</span></span><br></pre></td></tr></table></figure>
+<p>想要解析这种格式，我们就可以用正则表达式。正则表达式中最重要的是<strong>模式（pattern）</strong>。如果你不知道什么是正则表达式，我们将很快的重新温习一下，但是完全的解释什么是正则表达式已经超出了这篇文章的范围。首先，我们来看一下 \w+, 它的意思是匹配任何一个数字、字母或者是下划线至少一次（\w 代表匹配任意一个数字、字母或者是下划线，+ 代表至少匹配一次）。然后，为了确保我们以后可以使用匹配的结果，需要用括号将它括起来，创建一个<strong>捕获组（capture group）</strong>。接下来是一个空格符，一个等号，又一个空格符和一个 # 号。然后，我们需要匹配 6 个十六进制数字。\p{Hex_Digit} 意思是匹配一个十六进制数字（Hex_Digit 是一个 unicode 属性名）。修饰符 {6} 意味着我们需要匹配 6 个，然后和之前一样，把这些一起用括号括起来，这样就创建了第二个捕获组:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">NSError</span> <span class="meta">*error</span> <span class="string">=</span> <span class="string">nil;</span></span><br><span class="line"><span class="string">NSString</span> <span class="meta">*pattern</span> <span class="string">=</span> <span class="string">@"(\\w+)</span> <span class="string">=</span> <span class="comment">#(\\p&#123;Hex_Digit&#125;&#123;6&#125;)";</span></span><br><span class="line"><span class="string">NSRegularExpression</span> <span class="meta">*expression</span> <span class="string">=</span> <span class="string">[NSRegularExpression</span> <span class="attr">regularExpressionWithPattern:pattern</span></span><br><span class="line"><span class="attr">                                                                            options:</span><span class="number">0</span></span><br><span class="line"><span class="attr">                                                                              error:</span><span class="string">&amp;error];</span></span><br><span class="line"><span class="string">NSTextCheckingResult</span> <span class="meta">*result</span> <span class="string">=</span> <span class="string">[expression</span> <span class="attr">firstMatchInString:string</span> </span><br><span class="line"><span class="attr">                                                      options:</span><span class="number">0</span></span><br><span class="line"><span class="attr">                                                        range:</span><span class="string">NSMakeRange(0,</span> <span class="string">string.length)];</span></span><br><span class="line"><span class="string">NSString</span> <span class="meta">*key</span> <span class="string">=</span> <span class="string">[string</span> <span class="attr">substringWithRange:[result</span> <span class="attr">rangeAtIndex:1]];</span></span><br><span class="line"><span class="string">NSString</span> <span class="meta">*value</span> <span class="string">=</span> <span class="string">[string</span> <span class="attr">substringWithRange:[result</span> <span class="attr">rangeAtIndex:2]];</span></span><br></pre></td></tr></table></figure>
+<p>上面我们创建了一个正则表达式对象，让它匹配一个字符串对象 string，通过 rangeAtIndex 方法可以获取用括号捕获的两组数据。在匹配的结果对象中，索引 0 是正则表达式对象自己，索引 1 是第一个捕获组，索引 2 是第二个捕获组，依此类推。最后，我们获取到的 key 的值是 backgroundColor，value 的值是 ff0000。上面的正则表达式只解析了一行，下一步我们将要解析多行，并添加一些错误检查。比如，输入如下：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">backgroundColor = <span class="comment">#ff0000</span></span><br><span class="line">textColor = <span class="comment">#0000ff</span></span><br></pre></td></tr></table></figure>
+<p>首先，利用换行符将输入字符串分隔开，然后遍历返回的数组，并将解析的结果添加到我们的字典中，最后我们将生成这样一个字典：@{@”backgroundColor”: @”ff0000”, @”textColor”: @”0000ff”}。下面是具体的代码：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">NSString</span> <span class="meta">*pattern</span> <span class="string">=</span> <span class="string">@"(\\w+)</span> <span class="string">=</span> <span class="comment">#([\\da-f]&#123;6&#125;)";</span></span><br><span class="line"><span class="string">NSRegularExpression</span> <span class="meta">*expression</span> <span class="string">=</span> <span class="string">[NSRegularExpression</span> <span class="attr">regularExpressionWithPattern:pattern</span></span><br><span class="line"><span class="attr">                                                                            options:</span><span class="number">0</span> </span><br><span class="line"><span class="attr">                                                                              error:</span><span class="literal">NULL</span><span class="string">];</span></span><br><span class="line"><span class="string">NSArray</span> <span class="meta">*lines</span> <span class="string">=</span> <span class="string">[input</span> <span class="attr">componentsSeparatedByCharactersInSet:[NSCharacterSet</span> <span class="string">newlineCharacterSet]];</span></span><br><span class="line"><span class="string">NSMutableDictionary</span> <span class="meta">*result</span> <span class="string">=</span> <span class="string">[NSMutableDictionary</span> <span class="string">dictionary];</span></span><br><span class="line"><span class="string">for</span> <span class="string">(NSString</span> <span class="meta">*line</span> <span class="string">in</span> <span class="string">lines)</span> <span class="string">&#123;</span></span><br><span class="line">    <span class="string">NSTextCheckingResult</span> <span class="meta">*textCheckingResult</span> <span class="string">=</span> <span class="string">[expression</span> <span class="attr">firstMatchInString:line</span> </span><br><span class="line"><span class="attr">                                                                      options:</span><span class="number">0</span> </span><br><span class="line"><span class="attr">                                                                        range:</span><span class="string">NSMakeRange(0,</span> <span class="string">line.length)];</span></span><br><span class="line">    <span class="string">NSString*</span> <span class="string">key</span> <span class="string">=</span> <span class="string">[line</span> <span class="attr">substringWithRange:[textCheckingResult</span> <span class="attr">rangeAtIndex:1]];</span></span><br><span class="line">    <span class="string">NSString*</span> <span class="string">value</span> <span class="string">=</span> <span class="string">[line</span> <span class="attr">substringWithRange:[textCheckingResult</span> <span class="attr">rangeAtIndex:2]];</span></span><br><span class="line">    <span class="string">result[key]</span> <span class="string">=</span> <span class="string">value;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">return</span> <span class="string">result;</span></span><br></pre></td></tr></table></figure>
+<p>说句题外话，将字符串分解成数组，你还可以用 componentsSeparatedByString: 这个方法，或者用 enumerateSubstringsInRange:options:usingBlock: 这个方法来枚举子串，其中 option 这个参数应该传 NSStringEnumerationByLines。</p>
+<p>假如某一行数据没有匹配上（比如，我们不小心忘记一个十六进制字符），我们可以检查 textCheckingResult 对象是否为 nil，如果为 nil，就抛出一个错误，代码如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!textCheckingResult) &#123;</span><br><span class="line">    <span class="built_in">NSString</span>* message = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"Couldn't parse line: %@"</span>, line]</span><br><span class="line">    <span class="built_in">NSDictionary</span> *errorDetail = @&#123;<span class="built_in">NSLocalizedDescriptionKey</span>: message&#125;;</span><br><span class="line">    *error = [<span class="built_in">NSError</span> errorWithDomain:MyErrorDomain code:FormatError userInfo:errorDetail];</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="扫描器（Scanner）"><a href="#扫描器（Scanner）" class="headerlink" title="扫描器（Scanner）"></a>扫描器（Scanner）</h1><p>把一个字符串转化为一个字典，还有一种方式就是使用扫描器。幸运的是，Foundation 框架为我们提供了 NSScanner，一个易于使用的面向对象的API。首先，我们需要创建一个扫描器：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSScanner</span> *scanner = [<span class="built_in">NSScanner</span> scannerWithString:string];</span><br></pre></td></tr></table></figure>
+<p>默认情况下，扫描器会跳过所有空格符和换行符。但这里我们只希望跳过空格符：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">scanner.charactersToBeSkipped </span>= [NSCharacterSet whitespaceCharacterSet]<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>然后,我们定义一个十六进制字符集。系统定义了很多字符集，但却没有十六进制字符集：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSCharacterSet</span> *hexadecimalCharacterSet = </span><br><span class="line">  [<span class="built_in">NSCharacterSet</span> characterSetWithCharactersInString:<span class="string">@"0123456789abcdefABCDEF"</span>];</span><br></pre></td></tr></table></figure>
+<p>我们先写一个没有错误检查的版本。扫描器的工作原理是这样的：它接收一个字符串，并将光标设置在字符串的开始处。然后调用扫描方法，像这样：[sanner scanString:@”=” intoString:NULL]。如果扫描成功，该方法会返回 YES，光标会自动后移。scanCharactersFromSet:intoString: 方法的工作原理和之前的相似，只不过它扫描的是字符集，并将扫描的结果放入第二个参数的字符串指针所指向的地址中。我们使用 &amp;&amp; 对不同的扫描方法进行 “与” 操作。这种方式的好处是只有与 &amp;&amp; 操作符左边的扫描成功时，&amp;&amp; 右边的扫描方法才会被调用。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">NSMutableDictionary *result = [NSMutableDictionary <span class="keyword">dictionary];</span></span><br><span class="line"><span class="keyword">while </span>(!<span class="keyword">scanner.isAtEnd) </span>&#123;</span><br><span class="line">    NSString *key = nil<span class="comment">;</span></span><br><span class="line">    NSString *value = nil<span class="comment">;</span></span><br><span class="line">    NSCharacterSet *letters = [NSCharacterSet letterCharacterSet]<span class="comment">;</span></span><br><span class="line">    <span class="keyword">BOOL </span><span class="keyword">didScan </span>= [<span class="keyword">scanner </span><span class="keyword">scanCharactersFromSet:letters </span>intoString:&amp;key] &amp;&amp;</span><br><span class="line">                   [<span class="keyword">scanner </span><span class="keyword">scanString:@"=" </span>intoString:NULL] &amp;&amp;</span><br><span class="line">                   [<span class="keyword">scanner </span><span class="keyword">scanString:@"#" </span>intoString:NULL] &amp;&amp;</span><br><span class="line">                   [<span class="keyword">scanner </span><span class="keyword">scanCharactersFromSet:hexadecimalCharacterSet </span>intoString:&amp;value] &amp;&amp;</span><br><span class="line">                   value.length == <span class="number">6</span><span class="comment">;</span></span><br><span class="line">    result[key] = value<span class="comment">;</span></span><br><span class="line">    [<span class="keyword">scanner </span><span class="keyword">scanCharactersFromSet:[NSCharacterSet </span>newlineCharacterSet] </span><br><span class="line"><span class="symbol">                        intoString:</span>NULL]<span class="comment">; // 继续扫描下一行</span></span><br><span class="line">&#125;</span><br><span class="line">return result<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>接下来添加一个有错误处理的版本，我们可以在 didScan 该行后面开始写。如果扫描不成功，我们就返回 nil，并设置相应的 error 参数。在解析文本时，当输入字符串格式不正确时，这个时候应该怎么办呢？是让解析器崩溃，将错误值呈现给用户，还是尝试从错误中恢复，这值得我们仔细地思考清楚：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!didScan) &#123;</span><br><span class="line">       <span class="built_in">NSString</span> *message = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"Couldn't parse: %u"</span>, scanner.scanLocation];</span><br><span class="line">       <span class="built_in">NSDictionary</span> *errorDetail = @&#123;<span class="built_in">NSLocalizedDescriptionKey</span>: message&#125;;</span><br><span class="line">       *error = [<span class="built_in">NSError</span> errorWithDomain:MyErrorDomain code:FormatError userInfo:errorDetail];</span><br><span class="line">       <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>C 语言也提供了具有扫描器功能的函数,例如 sscanf（可以用 man sscanf 查看怎么使用）。它遵循和 printf 类似的语法，只不过操作是逆序的（它是解析一个字符串, 而不是生成一个）。</p>
+<h1 id="解析器"><a href="#解析器" class="headerlink" title="解析器"></a>解析器</h1><p>如果设计者希望像 (100,0,255) 这样来定义 RGB 颜色，该怎么办呢？我们必须让解析颜色的方法更智能一些。事实上，在完成后面的代码后，我们就已经会写一个基本的解析器了。</p>
+<p>首先，我们将添加一些方法到我们类中，并声明一个属性，类型为 NSScanner。第一个方法是 scanColor:，其作用是扫描十六进制的颜色值（例如 ff0000）或者 RGB 元组，例如(255,0,0)：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">NSDictionary</span> *)parse:(<span class="built_in">NSString</span> *)string error:(<span class="built_in">NSError</span> **)error</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">self</span>.scanner = [<span class="built_in">NSScanner</span> scannerWithString:string];</span><br><span class="line">    <span class="keyword">self</span>.scanner.charactersToBeSkipped = [<span class="built_in">NSCharacterSet</span> whitespaceCharacterSet];</span><br><span class="line"></span><br><span class="line">    <span class="built_in">NSMutableDictionary</span> *result = [<span class="built_in">NSMutableDictionary</span> dictionary];</span><br><span class="line">    <span class="built_in">NSCharacterSet</span> *letters = [<span class="built_in">NSCharacterSet</span> letterCharacterSet]</span><br><span class="line">    <span class="keyword">while</span> (!<span class="keyword">self</span>.scanner.isAtEnd) &#123;</span><br><span class="line">        <span class="built_in">NSString</span> *key = <span class="literal">nil</span>;</span><br><span class="line">        <span class="built_in">UIColor</span> *value = <span class="literal">nil</span>;</span><br><span class="line">        <span class="built_in">BOOL</span> didScan = [<span class="keyword">self</span>.scanner scanCharactersFromSet:letters intoString:&amp;key] &amp;&amp;</span><br><span class="line">                       [<span class="keyword">self</span>.scanner scanString:<span class="string">@"="</span> intoString:<span class="literal">NULL</span>] &amp;&amp;</span><br><span class="line">                       [<span class="keyword">self</span> scanColor:&amp;value];</span><br><span class="line">        result[key] = value;</span><br><span class="line">        [<span class="keyword">self</span>.scanner scanCharactersFromSet:[<span class="built_in">NSCharacterSet</span> newlineCharacterSet]</span><br><span class="line">                                 intoString:<span class="literal">NULL</span>]; <span class="comment">// 继续扫描下一行</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>scanColor: 这个方法非常简单。首先，它试图扫描一个十六进制的颜色值，如果失败，它会尝试扫描 RGB 元组：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">BOOL</span>)scanColor:(<span class="built_in">UIColor</span> **)<span class="keyword">out</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">self</span> scanHexColorIntoColor:<span class="keyword">out</span>] || [<span class="keyword">self</span> scanTupleColorIntoColor:<span class="keyword">out</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>扫描一个十六进制颜色和之前是一样的。唯一的区别是我们将其封装在一个方法中, 并且使用的都是 NSScanner 的方法。它会返回一个 BOOL 值表示扫描成功，并将结果存储到一个指向 UIColor 对象的指针：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">BOOL</span>)scanHexColorIntoColor:(<span class="built_in">UIColor</span> **)<span class="keyword">out</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSCharacterSet</span> *hexadecimalCharacterSet = </span><br><span class="line">       [<span class="built_in">NSCharacterSet</span> characterSetWithCharactersInString:<span class="string">@"0123456789abcdefABCDEF"</span>];</span><br><span class="line">    <span class="built_in">NSString</span> *colorString = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">if</span> ([<span class="keyword">self</span>.scanner scanString:<span class="string">@"#"</span> intoString:<span class="literal">NULL</span>] &amp;&amp;</span><br><span class="line">        [<span class="keyword">self</span>.scanner scanCharactersFromSet:hexadecimalCharacterSet </span><br><span class="line">                                 intoString:&amp;colorString] &amp;&amp;</span><br><span class="line">        colorString.length == <span class="number">6</span>) &#123;</span><br><span class="line">        *<span class="keyword">out</span> = [<span class="built_in">UIColor</span> colorWithHexString:colorString];</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>扫描基于 RGB 元组的颜色值也非常相似。在扫描 @”(“ 时，我们进行了与操作。在生产环境代码中，我们可能需要更多的错误检查，例如确保整数的范围 0-255：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">BOOL</span>)scanTupleColorIntoColor:(<span class="built_in">UIColor</span> **)<span class="keyword">out</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSInteger</span> red, green, blue = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">BOOL</span> didScan = [<span class="keyword">self</span>.scanner scanString:<span class="string">@"("</span> intoString:<span class="literal">NULL</span>] &amp;&amp;</span><br><span class="line">                   [<span class="keyword">self</span>.scanner scanInteger:&amp;red] &amp;&amp;</span><br><span class="line">                   [<span class="keyword">self</span>.scanner scanString:<span class="string">@","</span> intoString:<span class="literal">NULL</span>] &amp;&amp;</span><br><span class="line">                   [<span class="keyword">self</span>.scanner scanInteger:&amp;green] &amp;&amp;</span><br><span class="line">                   [<span class="keyword">self</span>.scanner scanString:<span class="string">@","</span> intoString:<span class="literal">NULL</span>] &amp;&amp;</span><br><span class="line">                   [<span class="keyword">self</span>.scanner scanInteger:&amp;blue] &amp;&amp;</span><br><span class="line">                   [<span class="keyword">self</span>.scanner scanString:<span class="string">@")"</span> intoString:<span class="literal">NULL</span>];</span><br><span class="line">    <span class="keyword">if</span> (didScan) &#123;</span><br><span class="line">        *<span class="keyword">out</span> = [<span class="built_in">UIColor</span> colorWithRed:(<span class="built_in">CGFloat</span>)red/<span class="number">255.</span></span><br><span class="line">                               green:(<span class="built_in">CGFloat</span>)green/<span class="number">255.</span></span><br><span class="line">                                blue:(<span class="built_in">CGFloat</span>)blue/<span class="number">255.</span> </span><br><span class="line">                               alpha:<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>写一个扫描器，就是在逻辑上将多个可变的扫描值混合起来，并调用其它的一些方法。解析器不仅是一个非常吸引人的主题，还是一个强大的工具。一旦你知道如何编写一个解析器，你就可以发明一些小语言，如定义样式表、解析约束、查询数据模型、描述业务逻辑，等等。关于这个话题 Fowler 写了一本非常有趣的书，名为<a href="https://martinfowler.com/books/dsl.html" target="_blank" rel="noopener">《领域特定语言》</a>。</p>
+<h1 id="标记化（Tokenization）"><a href="#标记化（Tokenization）" class="headerlink" title="标记化（Tokenization）"></a>标记化（Tokenization）</h1><p>我们已经有一个非常简单的解析器，它可以从一个文件中的字符串中提取键值对，我们也可以使用这些字符串生成 UIColor 对象。但是还没有完。要是设计者想要定义更多的事情，怎么办？比如，假设我们有不同的文件，其中包含一些布局的约束，格式如下：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">myView.<span class="keyword">left</span> = otherView.<span class="keyword">right</span> * <span class="number">2</span> + <span class="number">10</span></span><br><span class="line">viewController.<span class="keyword">view</span>.centerX + myConstant &lt;= self.<span class="keyword">view</span>.centerX</span><br></pre></td></tr></table></figure>
+<p>我们该如何解析这个呢？实践证明正则表达式并不是最好的方法。</p>
+<p>在我们进行解析之前，先把这个字符串进行标记化是一个不错的主意。标记化就是将一个字符串转换成一连串标记 (token)的过程。 例如，myConstant = 100 被标记化的结果可能会是 @[@”myConstant”, @”=”, @100]。在大多数程序语言中, 标记化就是删除空白符并将相关的字符解析成标记。在我们的语言中，标记可以是标识符（如 myConstant 或 centerX），操作符（如 .，+ 或 =）或数字（如 100）。在标记化之后，标记会继续被解析。</p>
+<p>为了实现标记化（有时也称为词法分析 lexing 或扫描 scanning），我们可以重用 NSScanner 类。首先，我们可以专注于解析只包含操作符的字符串：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSScanner</span> *scanner = [<span class="built_in">NSScanner</span> scannerWithString:contents];</span><br><span class="line"><span class="built_in">NSMutableArray</span> *tokens = [<span class="built_in">NSMutableArray</span> array];</span><br><span class="line"><span class="keyword">while</span> (![scanner isAtEnd]) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="built_in">NSString</span> *operator <span class="keyword">in</span> @[<span class="string">@"="</span>, <span class="string">@"+"</span>, <span class="string">@"*"</span>, <span class="string">@"&gt;="</span>, <span class="string">@"&lt;="</span>, <span class="string">@"."</span>]) &#123;</span><br><span class="line">      <span class="keyword">if</span> ([scanner scanString:operator intoString:<span class="literal">NULL</span>]) &#123;</span><br><span class="line">          [tokens addObject:operator];</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下一步是识别像 myConstant 和 viewController 这样的标识符。为了简单起见，标识符只包含字母（没有数字）。如下：</p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NSString</span> *<span class="literal">result</span> = <span class="keyword">nil</span>;</span><br><span class="line"><span class="keyword">if</span> ([scanner scanCharactersFromSet:[<span class="type">NSCharacterSet</span> letterCharacterSet] </span><br><span class="line">                        intoString:&amp;<span class="literal">result</span>]) &#123;</span><br><span class="line">    [tokens addObject:<span class="literal">result</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果这些字符被找到，scanCharactersFromSet:intoString: 这个方法会返回 YES，然后我们将这些找到的字符添加到我们的标记数组。我们快要完成了，唯一剩下的事情就是是解析数字了。幸运的是，NSScanner 也提供了一些方法。我们可以使用 scanDouble: 方法来扫描 double 类型数据，并将其封装成 NSNumber 对象然后添加到标记数组：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> doubleResult = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> ([scanner <span class="string">scanDouble:</span>&amp;doubleResult]) &#123;</span><br><span class="line">    [tokens <span class="string">addObject:</span>@(doubleResult)];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在我们的解析器完成了，下面我们来进行测试：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">NSString* example = @<span class="string">"myConstant = 100\n"</span></span><br><span class="line">                    @<span class="string">"\nmyView.left = otherView.right * 2 + 10\n"</span></span><br><span class="line">                    @<span class="string">"viewController.view.centerX + myConstant &lt;= self.view.centerX"</span><span class="comment">;</span></span><br><span class="line">NSArray *result = [self.<span class="keyword">scanner </span>tokenize:example]<span class="comment">;</span></span><br><span class="line">NSArray *expected = @[@<span class="string">"myConstant"</span>, @<span class="string">"="</span>, @<span class="number">100</span>, @<span class="string">"myView"</span>, @<span class="string">"."</span>, @<span class="string">"left"</span>, </span><br><span class="line">                      @<span class="string">"="</span>, @<span class="string">"otherView"</span>, @<span class="string">"."</span>, @<span class="string">"right"</span>, @<span class="string">"*"</span>, @<span class="number">2</span>, @<span class="string">"+"</span>, </span><br><span class="line">                      @<span class="number">10</span>, @<span class="string">"viewController"</span>, @<span class="string">"."</span>, @<span class="string">"view"</span>, @<span class="string">"."</span>, </span><br><span class="line">                      @<span class="string">"centerX"</span>, @<span class="string">"+"</span>, @<span class="string">"myConstant"</span>, @<span class="string">"&lt;="</span>, @<span class="string">"self"</span>, </span><br><span class="line">                      @<span class="string">"."</span>, @<span class="string">"view"</span>, @<span class="string">"."</span>, @<span class="string">"centerX"</span>]<span class="comment">;</span></span><br><span class="line">XCTAssertEqualObjects(result, expected)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>我们的扫描器可以对操作符，姓名，以及被封装成 NSNumber 对象的数字创建独立的标记。完成这些之后,我们准备进行第二步：把这个标记数组解析成更有意义的一些东西。</p>
+<h2 id="语法解析（Parsing）"><a href="#语法解析（Parsing）" class="headerlink" title="语法解析（Parsing）"></a>语法解析（Parsing）</h2><p>我们之所以不能用正则表达式或扫描器来解决上述问题，是因为解析有可能失败。假定我们现在有一个标记：@“myConstant”。在我们的解析函数中，我们并不知道这是约束表达式的开始还是一个常数定义。我们需要两个都试一下，看看哪一个成功。我们可以手工来写这个解析代码，难倒是不难，但是写出来的代码就像一坨屎；或者我们可以使用更合适的工具：<strong>语法解析库（parsing library）</strong>。</p>
+<p>首先，我们需要语法分析库能理解的方式来描述我们的语言。下面的代码就是专为我们那个布局约束语言写的解析语法，使用的是<strong>扩展的巴科斯范式</strong>（EBNF）写法：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">constraint</span> = expression comparator expression</span><br><span class="line"><span class="attr">comparator</span> = <span class="string">"="</span> | <span class="string">"&gt;="</span> | <span class="string">"&lt;="</span></span><br><span class="line"><span class="attr">expression</span> = keyPath <span class="string">"."</span> attribute addMultiplier addConstant</span><br><span class="line"><span class="attr">keyPath</span> = identifier | identifier <span class="string">"."</span> keyPath</span><br><span class="line"><span class="attr">attribute</span> = <span class="string">"left"</span> | <span class="string">"right"</span> | <span class="string">"top"</span> | <span class="string">"bottom"</span> | <span class="string">"leading"</span> | <span class="string">"trailing"</span> | <span class="string">"width"</span> | <span class="string">"height"</span> | <span class="string">"centerX"</span> | <span class="string">"centerY"</span> | <span class="string">"baseline"</span></span><br><span class="line"><span class="attr">addMultiplier</span> = <span class="string">"*"</span> atom</span><br><span class="line"><span class="attr">addConstant</span> = <span class="string">"+"</span> atom</span><br><span class="line"><span class="attr">atom</span> = number | identifier</span><br></pre></td></tr></table></figure>
+<p>有许多的 Objective-C 库用于语法解析（参见 CocoaPods）。像 CoreParse 就提供了很多 Objective-C 的 API。然而，我们并不能直接将我们的语法应用在它上面。CoreParse 一次仅仅只有一个解析器工作。这意味着每当解析器需要在两个规则之间做决定（比如 keyPath 规则）的时候，它会根据下一个标记来做决定。如果事后我们发现它选错了，那麻烦就大了。当然有的解析器允许更模糊的语法，但性能损失很大。</p>
+<p>为了确保能够兼容语法分析库，可以对我们的语法做一些重构。 我们也可以将它转换成标准的巴科斯范式（BNF），下面的代码就是 CoreParse 支持的格式：</p>
+<figure class="highlight scilab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">NSString* grammarString = [@[</span><br><span class="line">    @<span class="string">"Atom ::= num@'</span>Number<span class="string">' | ident@'</span>Identifier<span class="string">';"</span>,</span><br><span class="line">    @<span class="string">"Constant ::= name@'</span>Identifier<span class="string">' '</span>=<span class="string">' value@&lt;Atom&gt;;"</span>,</span><br><span class="line">    @<span class="string">"Relation ::= '</span>=<span class="string">' | '</span>&gt;=<span class="string">' | '</span>&lt;=<span class="string">';"</span>,</span><br><span class="line">    @<span class="string">"Attribute ::= '</span>left<span class="string">' | '</span>right<span class="string">' | '</span>top<span class="string">' | '</span>bottom<span class="string">' | '</span>leading<span class="string">' | '</span>trailing<span class="string">' | '</span>width<span class="string">' | '</span>height<span class="string">' | '</span>centerX<span class="string">' | '</span>centerY<span class="string">' | '</span>baseline<span class="string">';"</span>,</span><br><span class="line">    @<span class="string">"Multiplier ::= '</span>*<span class="string">' num@'</span>Number<span class="string">';"</span>,</span><br><span class="line">    @<span class="string">"AddConstant ::= '</span>+<span class="string">' num@'</span>Number<span class="string">';"</span>,</span><br><span class="line">    @<span class="string">"KeypathAndAttribute ::= '</span>Identifier<span class="string">' '</span>.<span class="string">' &lt;AttributeOrRest&gt;;"</span>,</span><br><span class="line">    @<span class="string">"AttributeOrRest ::= att@&lt;Attribute&gt; | '</span>Identifier<span class="string">' '</span>.<span class="string">' &lt;AttributeOrRest&gt;;"</span>,</span><br><span class="line">    @<span class="string">"Expression ::= &lt;KeypathAndAttribute&gt; &lt;Multiplier&gt;? &lt;AddConstant&gt;?;"</span>,</span><br><span class="line">    @<span class="string">"LayoutConstraint ::= lhs@&lt;Expression&gt; rel@&lt;Relation&gt; rhs@&lt;Expression&gt;;"</span>,</span><br><span class="line">    @<span class="string">"Rule ::= &lt;Atom&gt; | &lt;LayoutConstraint&gt;;"</span>,</span><br><span class="line">] componentsJoinedByString:@<span class="string">"\n"</span>];</span><br></pre></td></tr></table></figure>
+<p>如果一个规则被匹配了，那么这个解析器就试图找到具有同样名称的类（如 Expression）。如果这个类实现了 initWithSyntaxTree: 方法，那么该方法就会被调用。另外，解析器还有一个委托，当有一个规则被匹配上或者发生错误时，委托都会被调用。举例来说，我们先来看一下 CPSyntaxTree 类，它的第一个子节点是一个关键字标记（调用 keyword 方法获取），它可能包含 @”=”，@”&gt;=” 或者 @”&lt;=” 中的任意一个。属性 layoutAttributes 是一个字典，它的 key 是一个字符串，value 是一个关于布局的 NSNumber 对象：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (id)parser:(CPParser *)parser didProduceSyntaxTree:(CPSyntaxTree *)syntaxTree</span><br><span class="line">    NSString *ruleName = syntaxTree.rule.name;</span><br><span class="line">    <span class="keyword">if</span> ([ruleName isEqualToString:@<span class="string">"Attribute"</span>]) &#123;</span><br><span class="line">        <span class="keyword">return</span> self.layoutAttributes<span class="string">[[[syntaxTree childAtIndex:0] keyword]]</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>解析器的完整代码在 GitHub，其中有一个类，大约 100 行代码，我们可以用它解析复杂的布局约束，如:</p>
+<figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">viewController.<span class="keyword">view</span>.centerX + <span class="number">20</span> &lt;= self.<span class="keyword">view</span>.centerX * <span class="number">0.5</span></span><br></pre></td></tr></table></figure>
+<p>我们会得到下面这样的结果，它可以很容易地转换成一个 NSLayoutConstraint 对象：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(&lt;Expression: self.keyPath=(viewController, view), </span><br><span class="line">              self.<span class="attribute">attribute</span>=9,</span><br><span class="line">              self.<span class="attribute">multiplier</span>=1, </span><br><span class="line">              self.<span class="attribute">constant</span>=20&gt; </span><br><span class="line"> -1 </span><br><span class="line"> &lt;Expression: self.keyPath=(self, view), </span><br><span class="line">              self.<span class="attribute">attribute</span>=9,</span><br><span class="line">              self.<span class="attribute">multiplier</span>=0.5,</span><br><span class="line">              self.<span class="attribute">constant</span>=0&gt;)</span><br></pre></td></tr></table></figure>
+<h1 id="其他的工具"><a href="#其他的工具" class="headerlink" title="其他的工具"></a>其他的工具</h1><p>除了 Objective-C 的库，其他的一些工具比如 Bison，Yacc，Ragel，以及 Lemon，都是用 C 语言实现的。</p>
+<p>另一件你可以做的事就是在 Build 时使用这些解析器生成一部分自己的代码。例如，一旦你有了一种语言的解析器，你就可以创建一个简单的命令行转换工具。添加一个 Xcode 的 Build 规则，每一次 Build 时，你自己的语言就会被一起编译。</p>
+<h1 id="关于语法分析的思考"><a href="#关于语法分析的思考" class="headerlink" title="关于语法分析的思考"></a>关于语法分析的思考</h1><p>语法分析看起来有一点奇怪，而且创建基于字符串的语言似乎并不是 Objective-C 的风格。但事实恰恰相反，苹果一直广泛使用着基于字符串的语言。如 NSLog 格式化字符串，NSPredicate 字符串，可视化的布局约束格式语言，甚至是 KVC。所有这些都用了一些小的内部解析器来解析字符串，并将其变成对象和方法。通常你不必自己编写一个解析器，这大大节省了工作时间：常见的语言如 JSON 和 XML 都有通用的解析器。但是如果你想要编写一个计算器，一种图形语言，甚至是一个嵌入式的 Smalltalk，解析器大有帮助。</p>
+<h1 id="关于原文"><a href="#关于原文" class="headerlink" title="关于原文"></a>关于原文</h1><p>原英文地址：<a href="https://www.objc.io/issues/9-strings/string-parsing/" target="_blank" rel="noopener">https://www.objc.io/issues/9-strings/string-parsing/</a><br>原中文地址：<a href="https://objccn.io/issue-9-4/" target="_blank" rel="noopener">https://objccn.io/issue-9-4/</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/13/ios-core-animation/ios-core-animation-chapter-8/" rel="next" title="核心动画-隐式动画">
+                <i class="fa fa-chevron-left"></i> 核心动画-隐式动画
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/06/get-ios-time/" rel="prev" title="iOS获取时间的方法">
+                iOS获取时间的方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/xirong.jpg"
+               alt="JackCat" />
+          <p class="site-author-name" itemprop="name">JackCat</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#正则法-vs-上下文无关文法（Context-Free-Grammars）"><span class="nav-number">1.</span> <span class="nav-text">正则法 vs. 上下文无关文法（Context-Free Grammars）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正则表达式"><span class="nav-number">2.</span> <span class="nav-text">正则表达式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#扫描器（Scanner）"><span class="nav-number">3.</span> <span class="nav-text">扫描器（Scanner）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解析器"><span class="nav-number">4.</span> <span class="nav-text">解析器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#标记化（Tokenization）"><span class="nav-number">5.</span> <span class="nav-text">标记化（Tokenization）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#语法解析（Parsing）"><span class="nav-number">5.1.</span> <span class="nav-text">语法解析（Parsing）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他的工具"><span class="nav-number">6.</span> <span class="nav-text">其他的工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于语法分析的思考"><span class="nav-number">7.</span> <span class="nav-text">关于语法分析的思考</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于原文"><span class="nav-number">8.</span> <span class="nav-text">关于原文</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2018 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JackCat</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="powered-by">
+   浙ICP备18009234号
+</div>
+
+<div class="theme-info">
+  Clone theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next/">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.3/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HfEUHBkxIxPKFFWsM8E29K81-gzGzoHsz", "j8gTHCF5cxmeGRbV0QIujeUw");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>
