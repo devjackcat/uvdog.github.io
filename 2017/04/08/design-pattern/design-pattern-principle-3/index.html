@@ -100,7 +100,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式原则-依赖倒置原则">
 <meta property="og:url" content="http://blog.devjackcat.com/2017/04/08/design-pattern/design-pattern-principle-3/index.html">
-<meta property="og:site_name" content="JackCat2">
+<meta property="og:site_name" content="JackCat">
 <meta property="og:description" content="定义高层模块不应该依赖低层模块，二者都应该依赖其抽象；抽象不应该依赖细节；细节应该依赖抽象。 问题由来类A直接依赖类B，假如要将类A改为依赖类C，则必须通过修改类A的代码来达成。这种场景下，类A一般是高层模块，负责复杂的业务逻辑；类B和类C是低层模块，负责基本的原子操作；假如修改类A，会给程序带来不必要的风险。 解决方案将类A修改为依赖接口I，类B和类C各自实现接口I，类A通过接口I间接与类B或者">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-09-16T13:01:07.739Z">
@@ -123,7 +123,7 @@
   };
 </script>
 
-  <title>设计模式原则-依赖倒置原则 | JackCat2</title>
+  <title>设计模式原则-依赖倒置原则 | JackCat</title>
   
 
 
@@ -182,14 +182,10 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">JackCat2</span>
+        <span class="site-title">JackCat</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-    
-      
-        <p class="site-subtitle">这是副标题</p>
-      
     
     
   </div>
@@ -383,7 +379,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JackCat2"/>
+      <meta itemprop="name" content="JackCat"/>
     </span>
 
     
@@ -542,8 +538,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/08/design-pattern/design-pattern-principle-2/" rel="next" title="设计模式原则-里氏替换原则">
-                <i class="fa fa-chevron-left"></i> 设计模式原则-里氏替换原则
+              <a href="/2017/04/08/design-pattern/design-pattern-principle-4/" rel="next" title="设计模式原则-接口隔离原则">
+                <i class="fa fa-chevron-left"></i> 设计模式原则-接口隔离原则
               </a>
             
           </div>
@@ -552,8 +548,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/08/design-pattern/design-pattern-principle-4/" rel="prev" title="设计模式原则-接口隔离原则">
-                设计模式原则-接口隔离原则 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/04/08/design-pattern/design-pattern-principle-1/" rel="prev" title="设计模式原则-单一职责">
+                设计模式原则-单一职责 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -879,7 +875,7 @@
     var isfetched = false;
     var isXml = true;
     // Search DB path;
-    var search_path = "search.xml";
+    var search_path = "search.json";
     if (search_path.length === 0) {
       search_path = "search.xml";
     } else if (/json$/i.test(search_path)) {

@@ -100,7 +100,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式原则-迪米特法则">
 <meta property="og:url" content="http://blog.devjackcat.com/2017/04/09/design-pattern/design-pattern-principle-5/index.html">
-<meta property="og:site_name" content="JackCat2">
+<meta property="og:site_name" content="JackCat">
 <meta property="og:description" content="定义一个对象应该对其他对象保持最少的了解。 问题由来类与类之间的关系越密切，耦合度越大，当一个类发生改变时，对另一个类的影响也越大。 解决方案尽量降低类与类之间的耦合。 自从我们接触编程开始，就知道了软件编程的总的原则：低耦合，高内聚。无论是面向过程编程还是面向对象编程，只有使各个模块之间的耦合尽量的低，才能提高代码的复用率。低耦合的优点不言而喻，但是怎么样编程才能做到低耦合呢？那正是迪米特法则要">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-09-16T13:01:07.739Z">
@@ -123,7 +123,7 @@
   };
 </script>
 
-  <title>设计模式原则-迪米特法则 | JackCat2</title>
+  <title>设计模式原则-迪米特法则 | JackCat</title>
   
 
 
@@ -182,14 +182,10 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">JackCat2</span>
+        <span class="site-title">JackCat</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-    
-      
-        <p class="site-subtitle">这是副标题</p>
-      
     
     
   </div>
@@ -383,7 +379,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JackCat2"/>
+      <meta itemprop="name" content="JackCat"/>
     </span>
 
     
@@ -864,7 +860,7 @@
     var isfetched = false;
     var isXml = true;
     // Search DB path;
-    var search_path = "search.xml";
+    var search_path = "search.json";
     if (search_path.length === 0) {
       search_path = "search.xml";
     } else if (/json$/i.test(search_path)) {
