@@ -1882,7 +1882,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff8aff;
+  background: #fffbff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3182,4 +3182,12 @@ ul.breadcrumb li+li:last-child {
   .pagination {
     margin: 8px 0 0;
   }
+}
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+select:focus,
+textarea:focus {
+  border-color: #f32853;
+  box-shadow: 0 0 0 1px #f32853;
 }
