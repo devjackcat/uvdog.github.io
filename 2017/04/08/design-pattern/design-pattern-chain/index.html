@@ -657,6 +657,10 @@
           
 
   
+    <div id="gitalk-container">
+    </div>
+    
+  
 
 
 
@@ -950,6 +954,32 @@
 
 
 
+
+
+  
+  
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+
+  
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.css"/>
+
+  
+  
+  <script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+   <script>
+        var gitalk = new Gitalk({
+          clientID: '2f016e81f7b3fe36a044',
+          clientSecret: 'c7b398b19279b0871cd90dc90f8a18ef21830dac',
+          repo: 'devjackcat.github.io',
+          owner: 'devjackcat',
+          admin: ['devjackcat'],
+          id: md5(location.pathname),
+          distractionFreeMode: 'false'
+        })
+        gitalk.render('gitalk-container')
+       </script>
 
 
   
