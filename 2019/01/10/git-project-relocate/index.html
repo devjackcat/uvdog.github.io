@@ -104,10 +104,14 @@
 <meta property="og:site_name" content="JackCat">
 <meta property="og:description" content="前几天，github开放了免费的私有库，这是无非是github被微软收购之后，给开发者的一个最大的新年贺礼。 在没开放私有库之前，开发者只能使用国内的Coding、chinaos、CSDN、京东，或者国外的Bitbucket。 那么现在可能会面临一个问题，就是如何将其他托管平台的私有库迁移到github上去呢？可以有如下几种方法。 我使用chinaos往github上迁移为例，迁移项目名为Relo">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-01-11T03:28:55.182Z">
+<meta property="og:image" content="http://static.devjackcat.com/15471753582310.jpg">
+<meta property="og:image" content="http://static.devjackcat.com/15471771278565.jpg">
+<meta property="og:image" content="http://static.devjackcat.com/15471755629317.jpg">
+<meta property="og:updated_time" content="2019-01-11T03:42:17.887Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git项目仓库迁移">
 <meta name="twitter:description" content="前几天，github开放了免费的私有库，这是无非是github被微软收购之后，给开发者的一个最大的新年贺礼。 在没开放私有库之前，开发者只能使用国内的Coding、chinaos、CSDN、京东，或者国外的Bitbucket。 那么现在可能会面临一个问题，就是如何将其他托管平台的私有库迁移到github上去呢？可以有如下几种方法。 我使用chinaos往github上迁移为例，迁移项目名为Relo">
+<meta name="twitter:image" content="http://static.devjackcat.com/15471753582310.jpg">
 
 
 
@@ -431,7 +435,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-01-11 11:28:55" itemprop="dateModified" datetime="2019-01-11T11:28:55+08:00">2019-01-11</time>
+                <time title="修改时间：2019-01-11 11:42:17" itemprop="dateModified" datetime="2019-01-11T11:42:17+08:00">2019-01-11</time>
               
             
           </span>
@@ -488,10 +492,21 @@
 <p>我使用chinaos往github上迁移为例，迁移项目名为RelocateTest。</p>
 <h3 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h3><p><strong>1. 使用命令从chinaos导出一份裸体仓库代码</strong></p>
 <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">clone</span> <span class="title">--bare</span> git@gitee.com:devjackcat/RelocateTest.git</span><br></pre></td></tr></table></figure>
-<p>使用–bare参数clone的代码是不是任何版本信息的，导出文件结构也和普通<figure class="highlight plain"><figcaption><span>clone```不一样，其中包含了，branch信息、commit记录、tag等信息。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![](http://static.devjackcat.com/15471753582310.jpg)</span><br><span class="line"></span><br><span class="line">**2. 在github新建一个RelocateTest项目**</span><br><span class="line"></span><br><span class="line">以镜像的形式进行push</span><br></pre></td></tr></table></figure></p>
-<p>git push –mirror <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>:devjackcat/RelocateTest.git<br><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">从<span class="keyword">push</span>结果中可以看到<span class="keyword">push</span>了哪些内容</span><br><span class="line">![](http:<span class="comment">//static.devjackcat.com/15471771278565.jpg)</span></span><br><span class="line">可以看到推送了两个branch，两个tag</span><br><span class="line"></span><br><span class="line">**<span class="number">3.</span> 登录github查看<span class="keyword">push</span>结果，看到如下结果，则说明已迁移成功。**</span><br><span class="line"></span><br><span class="line">![](http:<span class="comment">//static.devjackcat.com/15471755629317.jpg)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">### 方案二</span></span><br><span class="line"></span><br><span class="line">直接在原仓库下更改仓库地址,但**这种方式只会同步当前分支的信息，其他branch，tag都不会同步不**</span><br><span class="line"></span><br><span class="line">**<span class="number">1.</span> 更改仓库地址**</span><br></pre></td></tr></table></figure></p>
-<p>git remote set-url origin <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>:devjackcat/RelocateTest.git<br><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*<span class="strong">*2. push至新仓库*</span><span class="strong">*</span></span><br></pre></td></tr></table></figure></p>
-<p>git push<br><code>`</code></p>
+<p>使用–bare参数clone的代码是不是任何版本信息的，导出文件结构也和普通 git clone 不一样，其中包含了，branch信息、commit记录、tag等信息。</p>
+<p><img src="http://static.devjackcat.com/15471753582310.jpg" alt=""></p>
+<p><strong>2. 在github新建一个RelocateTest项目</strong></p>
+<p>以镜像的形式进行push</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push --mirror git<span class="meta">@github</span>.<span class="string">com:</span>devjackcat/RelocateTest.git</span><br></pre></td></tr></table></figure>
+<p>从push结果中可以看到push了哪些内容<br><img src="http://static.devjackcat.com/15471771278565.jpg" alt=""><br>可以看到推送了两个branch，两个tag</p>
+<p><strong>3. 登录github查看push结果，看到如下结果，则说明已迁移成功。</strong></p>
+<p><img src="http://static.devjackcat.com/15471755629317.jpg" alt=""></p>
+<h3 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h3><p>直接在原仓库下更改仓库地址,但<strong>这种方式只会同步当前分支的信息，其他branch，tag都不会同步不</strong></p>
+<p><strong>1. 更改仓库地址</strong></p>
+<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">git </span><span class="string">remote </span><span class="built_in">set-url</span> <span class="string">origin </span><span class="string">git@</span><span class="string">github.</span><span class="string">com:devjackcat/</span><span class="string">RelocateTest.</span><span class="string">git</span></span><br></pre></td></tr></table></figure>
+<p><strong>2. push至新仓库</strong></p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">push</span></span><br></pre></td></tr></table></figure>
+<h3 id="方案三"><a href="#方案三" class="headerlink" title="方案三"></a>方案三</h3><p>直接在github新建项目时，点击 “import code” 按钮，填入原项目地址(只能使用http方式进行import)，“Begin Import”即可。</p>
+<p>该方案无法导入私有库</p>
 
       
     </div>
@@ -704,7 +719,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#方案一"><span class="nav-number">1.</span> <span class="nav-text">方案一</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#方案一"><span class="nav-number">1.</span> <span class="nav-text">方案一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案二"><span class="nav-number">2.</span> <span class="nav-text">方案二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案三"><span class="nav-number">3.</span> <span class="nav-text">方案三</span></a></li></ol></div>
             
 
           </div>
