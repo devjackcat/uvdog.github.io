@@ -11,10 +11,8 @@
 
 
 
-  
 
-
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next gemini" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -79,7 +77,7 @@
     fastclick: false,
     lazyload: false,
     tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     algolia: {
       applicationID: '',
       apiKey: '',
@@ -96,17 +94,17 @@
 
 
 
-  <meta name="description" content="定义一个对象应该对其他对象保持最少的了解。 问题由来类与类之间的关系越密切，耦合度越大，当一个类发生改变时，对另一个类的影响也越大。 解决方案尽量降低类与类之间的耦合。 自从我们接触编程开始，就知道了软件编程的总的原则：低耦合，高内聚。无论是面向过程编程还是面向对象编程，只有使各个模块之间的耦合尽量的低，才能提高代码的复用率。低耦合的优点不言而喻，但是怎么样编程才能做到低耦合呢？那正是迪米特法则要">
+  <meta name="description" content="定义一个对象应该对其他对象保持最少的了解。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式原则-迪米特法则">
 <meta property="og:url" content="http://blog.devjackcat.com/2017/04/09/design-pattern/design-pattern-principle-5/index.html">
-<meta property="og:site_name" content="JackCat">
-<meta property="og:description" content="定义一个对象应该对其他对象保持最少的了解。 问题由来类与类之间的关系越密切，耦合度越大，当一个类发生改变时，对另一个类的影响也越大。 解决方案尽量降低类与类之间的耦合。 自从我们接触编程开始，就知道了软件编程的总的原则：低耦合，高内聚。无论是面向过程编程还是面向对象编程，只有使各个模块之间的耦合尽量的低，才能提高代码的复用率。低耦合的优点不言而喻，但是怎么样编程才能做到低耦合呢？那正是迪米特法则要">
+<meta property="og:site_name" content="技术经验分享">
+<meta property="og:description" content="定义一个对象应该对其他对象保持最少的了解。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-16T13:01:07.739Z">
+<meta property="og:updated_time" content="2020-03-05T07:43:31.949Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式原则-迪米特法则">
-<meta name="twitter:description" content="定义一个对象应该对其他对象保持最少的了解。 问题由来类与类之间的关系越密切，耦合度越大，当一个类发生改变时，对另一个类的影响也越大。 解决方案尽量降低类与类之间的耦合。 自从我们接触编程开始，就知道了软件编程的总的原则：低耦合，高内聚。无论是面向过程编程还是面向对象编程，只有使各个模块之间的耦合尽量的低，才能提高代码的复用率。低耦合的优点不言而喻，但是怎么样编程才能做到低耦合呢？那正是迪米特法则要">
+<meta name="twitter:description" content="定义一个对象应该对其他对象保持最少的了解。">
 
 
 
@@ -123,7 +121,7 @@
   };
 </script>
 
-  <title>设计模式原则-迪米特法则 | JackCat</title>
+  <title>设计模式原则-迪米特法则 | 技术经验分享</title>
   
 
 
@@ -182,7 +180,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">JackCat</span>
+        <span class="site-title">技术经验分享</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -379,7 +377,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JackCat"/>
+      <meta itemprop="name" content="技术经验分享"/>
     </span>
 
     
@@ -430,7 +428,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-09-16 21:01:07" itemprop="dateModified" datetime="2018-09-16T21:01:07+08:00">2018-09-16</time>
+                <time title="修改时间：2020-03-05 15:43:31" itemprop="dateModified" datetime="2020-03-05T15:43:31+08:00">2020-03-05</time>
               
             
           </span>
@@ -482,6 +480,7 @@
 
       
         <h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>一个对象应该对其他对象保持最少的了解。</p>
+<a id="more"></a>
 <h1 id="问题由来"><a href="#问题由来" class="headerlink" title="问题由来"></a>问题由来</h1><p>类与类之间的关系越密切，耦合度越大，当一个类发生改变时，对另一个类的影响也越大。</p>
 <h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>尽量降低类与类之间的耦合。</p>
 <p>自从我们接触编程开始，就知道了软件编程的总的原则：低耦合，高内聚。无论是面向过程编程还是面向对象编程，只有使各个模块之间的耦合尽量的低，才能提高代码的复用率。低耦合的优点不言而喻，但是怎么样编程才能做到低耦合呢？那正是迪米特法则要去完成的。</p>
@@ -523,8 +522,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/09/design-pattern/design-pattern-principle-6/" rel="next" title="设计模式原则-开闭原则">
-                <i class="fa fa-chevron-left"></i> 设计模式原则-开闭原则
+              <a href="/2017/04/08/design-pattern/design-pattern-principle-1/" rel="next" title="设计模式原则-单一职责">
+                <i class="fa fa-chevron-left"></i> 设计模式原则-单一职责
               </a>
             
           </div>
@@ -533,8 +532,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/10/ios-core-animation/ios-core-animation-chapter-6/" rel="prev" title="核心动画-专用图层">
-                核心动画-专用图层 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/04/09/design-pattern/design-pattern-principle-6/" rel="prev" title="设计模式原则-开闭原则">
+                设计模式原则-开闭原则 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -729,7 +728,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

@@ -11,10 +11,8 @@
 
 
 
-  
 
-
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next gemini" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -79,7 +77,7 @@
     fastclick: false,
     lazyload: false,
     tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     algolia: {
       applicationID: '',
       apiKey: '',
@@ -96,17 +94,17 @@
 
 
 
-  <meta name="description" content="肯定有不少人跟我刚看到这项原则的时候一样，对这个原则的名字充满疑惑。其实原因就是这项原则最早是在1988年，由麻省理工学院的一位姓里的女士（Barbara Liskov）提出来的。 定义 1如果对每一个类型为 T1的对象 o1，都有类型为 T2 的对象o2，使得以 T1定义的所有程序 P 在所有的对象 o1 都代换成 o2 时，程序 P 的行为没有发生变化，那么类型 T2 是类型 T1 的子类型。">
+  <meta name="description" content="肯定有不少人跟我刚看到这项原则的时候一样，对这个原则的名字充满疑惑。其实原因就是这项原则最早是在1988年，由麻省理工学院的一位姓里的女士（Barbara Liskov）提出来的。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式原则-里氏替换原则">
 <meta property="og:url" content="http://blog.devjackcat.com/2017/04/08/design-pattern/design-pattern-principle-2/index.html">
-<meta property="og:site_name" content="JackCat">
-<meta property="og:description" content="肯定有不少人跟我刚看到这项原则的时候一样，对这个原则的名字充满疑惑。其实原因就是这项原则最早是在1988年，由麻省理工学院的一位姓里的女士（Barbara Liskov）提出来的。 定义 1如果对每一个类型为 T1的对象 o1，都有类型为 T2 的对象o2，使得以 T1定义的所有程序 P 在所有的对象 o1 都代换成 o2 时，程序 P 的行为没有发生变化，那么类型 T2 是类型 T1 的子类型。">
+<meta property="og:site_name" content="技术经验分享">
+<meta property="og:description" content="肯定有不少人跟我刚看到这项原则的时候一样，对这个原则的名字充满疑惑。其实原因就是这项原则最早是在1988年，由麻省理工学院的一位姓里的女士（Barbara Liskov）提出来的。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-16T13:01:07.738Z">
+<meta property="og:updated_time" content="2020-03-05T07:43:19.973Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式原则-里氏替换原则">
-<meta name="twitter:description" content="肯定有不少人跟我刚看到这项原则的时候一样，对这个原则的名字充满疑惑。其实原因就是这项原则最早是在1988年，由麻省理工学院的一位姓里的女士（Barbara Liskov）提出来的。 定义 1如果对每一个类型为 T1的对象 o1，都有类型为 T2 的对象o2，使得以 T1定义的所有程序 P 在所有的对象 o1 都代换成 o2 时，程序 P 的行为没有发生变化，那么类型 T2 是类型 T1 的子类型。">
+<meta name="twitter:description" content="肯定有不少人跟我刚看到这项原则的时候一样，对这个原则的名字充满疑惑。其实原因就是这项原则最早是在1988年，由麻省理工学院的一位姓里的女士（Barbara Liskov）提出来的。">
 
 
 
@@ -123,7 +121,7 @@
   };
 </script>
 
-  <title>设计模式原则-里氏替换原则 | JackCat</title>
+  <title>设计模式原则-里氏替换原则 | 技术经验分享</title>
   
 
 
@@ -182,7 +180,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">JackCat</span>
+        <span class="site-title">技术经验分享</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -379,7 +377,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JackCat"/>
+      <meta itemprop="name" content="技术经验分享"/>
     </span>
 
     
@@ -430,7 +428,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-09-16 21:01:07" itemprop="dateModified" datetime="2018-09-16T21:01:07+08:00">2018-09-16</time>
+                <time title="修改时间：2020-03-05 15:43:19" itemprop="dateModified" datetime="2020-03-05T15:43:19+08:00">2020-03-05</time>
               
             
           </span>
@@ -482,6 +480,7 @@
 
       
         <p>肯定有不少人跟我刚看到这项原则的时候一样，对这个原则的名字充满疑惑。其实原因就是这项原则最早是在1988年，由麻省理工学院的一位姓里的女士（Barbara Liskov）提出来的。</p>
+<a id="more"></a>
 <h1 id="定义-1"><a href="#定义-1" class="headerlink" title="定义 1"></a>定义 1</h1><p>如果对每一个类型为 T1的对象 o1，都有类型为 T2 的对象o2，使得以 T1定义的所有程序 P 在所有的对象 o1 都代换成 o2 时，程序 P 的行为没有发生变化，那么类型 T2 是类型 T1 的子类型。</p>
 <h1 id="定义-2"><a href="#定义-2" class="headerlink" title="定义 2"></a>定义 2</h1><p>所有引用基类的地方必须能透明地使用其子类的对象。</p>
 <h1 id="问题由来"><a href="#问题由来" class="headerlink" title="问题由来"></a>问题由来</h1><p>有一功能P1，由类A完成。现需要将功能P1进行扩展，扩展后的功能为P，其中P由原有功能P1与新功能P2组成。新功能P由类A的子类B来完成，则子类B在完成新功能P2的同时，有可能会导致原有功能P1发生故障。</p>
@@ -552,8 +551,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/08/design-pattern/design-pattern-principle-4/" rel="prev" title="设计模式原则-接口隔离原则">
-                设计模式原则-接口隔离原则 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/04/08/design-pattern/design-pattern-principle-3/" rel="prev" title="设计模式原则-依赖倒置原则">
+                设计模式原则-依赖倒置原则 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -748,7 +747,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

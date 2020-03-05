@@ -11,10 +11,8 @@
 
 
 
-  
 
-
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next gemini" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -79,7 +77,7 @@
     fastclick: false,
     lazyload: false,
     tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     algolia: {
       applicationID: '',
       apiKey: '',
@@ -96,13 +94,13 @@
 
 
 
-  <meta name="description" content="前言 嗯，圆和椭圆还不错，但如果是带圆角的矩形呢？我们现在能做到那样了么？史蒂芬·乔布斯  我们在第三章『图层几何学』中讨论了图层的frame，第二章『寄宿图』则讨论了图层的寄宿图。但是图层不仅仅可以是图片或是颜色的容器；还有一系列内建的特性使得创造美丽优雅的令人深刻的界面元素成为可能。在这一章，我们将会探索一些能够通过使用CALayer属性实现的视觉效果。 圆角圆角矩形是iOS的一个标志性审美特">
+  <meta name="description" content="前言 嗯，圆和椭圆还不错，但如果是带圆角的矩形呢？我们现在能做到那样了么？史蒂芬·乔布斯  我们在第三章『图层几何学』中讨论了图层的frame，第二章『寄宿图』则讨论了图层的寄宿图。但是图层不仅仅可以是图片或是颜色的容器；还有一系列内建的特性使得创造美丽优雅的令人深刻的界面元素成为可能。在这一章，我们将会探索一些能够通过使用CALayer属性实现的视觉效果。">
 <meta name="keywords" content="核心动画">
 <meta property="og:type" content="article">
 <meta property="og:title" content="核心动画-视觉效果">
 <meta property="og:url" content="http://blog.devjackcat.com/2017/04/08/ios-core-animation/ios-core-animation-chapter-4/index.html">
-<meta property="og:site_name" content="JackCat">
-<meta property="og:description" content="前言 嗯，圆和椭圆还不错，但如果是带圆角的矩形呢？我们现在能做到那样了么？史蒂芬·乔布斯  我们在第三章『图层几何学』中讨论了图层的frame，第二章『寄宿图』则讨论了图层的寄宿图。但是图层不仅仅可以是图片或是颜色的容器；还有一系列内建的特性使得创造美丽优雅的令人深刻的界面元素成为可能。在这一章，我们将会探索一些能够通过使用CALayer属性实现的视觉效果。 圆角圆角矩形是iOS的一个标志性审美特">
+<meta property="og:site_name" content="技术经验分享">
+<meta property="og:description" content="前言 嗯，圆和椭圆还不错，但如果是带圆角的矩形呢？我们现在能做到那样了么？史蒂芬·乔布斯  我们在第三章『图层几何学』中讨论了图层的frame，第二章『寄宿图』则讨论了图层的寄宿图。但是图层不仅仅可以是图片或是颜色的容器；还有一系列内建的特性使得创造美丽优雅的令人深刻的界面元素成为可能。在这一章，我们将会探索一些能够通过使用CALayer属性实现的视觉效果。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/4.1.png">
 <meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/4.2.png">
@@ -124,10 +122,10 @@
 <meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/4.19.png">
 <meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/4.20.png">
 <meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/4.21.png">
-<meta property="og:updated_time" content="2018-09-16T13:01:07.742Z">
+<meta property="og:updated_time" content="2020-03-05T07:41:57.282Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="核心动画-视觉效果">
-<meta name="twitter:description" content="前言 嗯，圆和椭圆还不错，但如果是带圆角的矩形呢？我们现在能做到那样了么？史蒂芬·乔布斯  我们在第三章『图层几何学』中讨论了图层的frame，第二章『寄宿图』则讨论了图层的寄宿图。但是图层不仅仅可以是图片或是颜色的容器；还有一系列内建的特性使得创造美丽优雅的令人深刻的界面元素成为可能。在这一章，我们将会探索一些能够通过使用CALayer属性实现的视觉效果。 圆角圆角矩形是iOS的一个标志性审美特">
+<meta name="twitter:description" content="前言 嗯，圆和椭圆还不错，但如果是带圆角的矩形呢？我们现在能做到那样了么？史蒂芬·乔布斯  我们在第三章『图层几何学』中讨论了图层的frame，第二章『寄宿图』则讨论了图层的寄宿图。但是图层不仅仅可以是图片或是颜色的容器；还有一系列内建的特性使得创造美丽优雅的令人深刻的界面元素成为可能。在这一章，我们将会探索一些能够通过使用CALayer属性实现的视觉效果。">
 <meta name="twitter:image" content="http://blog.devjackcat.com/images/ios-core-animation/4.1.png">
 
 
@@ -145,7 +143,7 @@
   };
 </script>
 
-  <title>核心动画-视觉效果 | JackCat</title>
+  <title>核心动画-视觉效果 | 技术经验分享</title>
   
 
 
@@ -204,7 +202,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">JackCat</span>
+        <span class="site-title">技术经验分享</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -401,7 +399,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JackCat"/>
+      <meta itemprop="name" content="技术经验分享"/>
     </span>
 
     
@@ -452,7 +450,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-09-16 21:01:07" itemprop="dateModified" datetime="2018-09-16T21:01:07+08:00">2018-09-16</time>
+                <time title="修改时间：2020-03-05 15:41:57" itemprop="dateModified" datetime="2020-03-05T15:41:57+08:00">2020-03-05</time>
               
             
           </span>
@@ -507,6 +505,7 @@
 <p>嗯，圆和椭圆还不错，但如果是带圆角的矩形呢？<br>我们现在能做到那样了么？<br>史蒂芬·乔布斯</p>
 </blockquote>
 <p>我们在第三章『图层几何学』中讨论了图层的frame，第二章『寄宿图』则讨论了图层的寄宿图。但是图层不仅仅可以是图片或是颜色的容器；还有一系列内建的特性使得创造美丽优雅的令人深刻的界面元素成为可能。在这一章，我们将会探索一些能够通过使用CALayer属性实现的视觉效果。</p>
+<a id="more"></a>
 <h1 id="圆角"><a href="#圆角" class="headerlink" title="圆角"></a>圆角</h1><p>圆角矩形是iOS的一个标志性审美特性。这在iOS的每一个地方都得到了体现，不论是主屏幕图标，还是警告弹框，甚至是文本框。按照这流行程度，你可能会认为一定有不借助Photoshop就能轻易创建圆角举行的方法。恭喜你，猜对了。</p>
 <p>CALayer有一个叫做conrnerRadius的属性控制着图层角的曲率。它是一个浮点数，默认为0（为0的时候就是直角），但是你可以把它设置成任意值。默认情况下，这个曲率值只影响背景颜色而不影响背景图片或是子图层。不过，如果把masksToBounds设置成YES的话，图层里面的所有东西都会被截取。</p>
 <p>我们可以通过一个简单的项目来演示这个效果。在Interface Builder中，我们放置一些视图，他们有一些子视图。而且这些子视图有一些超出了边界（如图4.1）。你可能无法看到他们超出了边界，因为在编辑界面的时候，超出的部分总是被Interface Builder裁切掉了。不过，你相信我就好了 :)</p>
@@ -854,7 +853,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

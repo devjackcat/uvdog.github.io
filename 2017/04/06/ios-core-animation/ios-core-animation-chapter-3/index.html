@@ -11,10 +11,8 @@
 
 
 
-  
 
-
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next gemini" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -79,7 +77,7 @@
     fastclick: false,
     lazyload: false,
     tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     algolia: {
       applicationID: '',
       apiKey: '',
@@ -96,13 +94,13 @@
 
 
 
-  <meta name="description" content="前言 不熟悉几何学的人就不要来这里了 –柏拉图学院入口的签名  在第二章里面，我们介绍了图层背后的图片，和一些控制图层坐标和旋转的属性。在这一章中，我们将要看一看图层内部是如何根据父图层和兄弟图层来控制位置和尺寸的。另外我们也会涉及如何管理图层的几何结构，以及它是如何被自动调整和自动布局影响的。 布局UIView有三个比较重要的布局属性：frame，bounds和center，CALayer对应地">
+  <meta name="description" content="前言 不熟悉几何学的人就不要来这里了 –柏拉图学院入口的签名  在第二章里面，我们介绍了图层背后的图片，和一些控制图层坐标和旋转的属性。在这一章中，我们将要看一看图层内部是如何根据父图层和兄弟图层来控制位置和尺寸的。另外我们也会涉及如何管理图层的几何结构，以及它是如何被自动调整和自动布局影响的。">
 <meta name="keywords" content="核心动画">
 <meta property="og:type" content="article">
 <meta property="og:title" content="核心动画-图层几何学">
 <meta property="og:url" content="http://blog.devjackcat.com/2017/04/06/ios-core-animation/ios-core-animation-chapter-3/index.html">
-<meta property="og:site_name" content="JackCat">
-<meta property="og:description" content="前言 不熟悉几何学的人就不要来这里了 –柏拉图学院入口的签名  在第二章里面，我们介绍了图层背后的图片，和一些控制图层坐标和旋转的属性。在这一章中，我们将要看一看图层内部是如何根据父图层和兄弟图层来控制位置和尺寸的。另外我们也会涉及如何管理图层的几何结构，以及它是如何被自动调整和自动布局影响的。 布局UIView有三个比较重要的布局属性：frame，bounds和center，CALayer对应地">
+<meta property="og:site_name" content="技术经验分享">
+<meta property="og:description" content="前言 不熟悉几何学的人就不要来这里了 –柏拉图学院入口的签名  在第二章里面，我们介绍了图层背后的图片，和一些控制图层坐标和旋转的属性。在这一章中，我们将要看一看图层内部是如何根据父图层和兄弟图层来控制位置和尺寸的。另外我们也会涉及如何管理图层的几何结构，以及它是如何被自动调整和自动布局影响的。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/3.1.jpeg">
 <meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/3.2.jpeg">
@@ -114,10 +112,10 @@
 <meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/3.8.jpeg">
 <meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/3.9.jpeg">
 <meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/3.10.jpeg">
-<meta property="og:updated_time" content="2018-09-16T13:01:07.741Z">
+<meta property="og:updated_time" content="2020-03-05T07:41:53.791Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="核心动画-图层几何学">
-<meta name="twitter:description" content="前言 不熟悉几何学的人就不要来这里了 –柏拉图学院入口的签名  在第二章里面，我们介绍了图层背后的图片，和一些控制图层坐标和旋转的属性。在这一章中，我们将要看一看图层内部是如何根据父图层和兄弟图层来控制位置和尺寸的。另外我们也会涉及如何管理图层的几何结构，以及它是如何被自动调整和自动布局影响的。 布局UIView有三个比较重要的布局属性：frame，bounds和center，CALayer对应地">
+<meta name="twitter:description" content="前言 不熟悉几何学的人就不要来这里了 –柏拉图学院入口的签名  在第二章里面，我们介绍了图层背后的图片，和一些控制图层坐标和旋转的属性。在这一章中，我们将要看一看图层内部是如何根据父图层和兄弟图层来控制位置和尺寸的。另外我们也会涉及如何管理图层的几何结构，以及它是如何被自动调整和自动布局影响的。">
 <meta name="twitter:image" content="http://blog.devjackcat.com/images/ios-core-animation/3.1.jpeg">
 
 
@@ -135,7 +133,7 @@
   };
 </script>
 
-  <title>核心动画-图层几何学 | JackCat</title>
+  <title>核心动画-图层几何学 | 技术经验分享</title>
   
 
 
@@ -194,7 +192,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">JackCat</span>
+        <span class="site-title">技术经验分享</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -391,7 +389,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JackCat"/>
+      <meta itemprop="name" content="技术经验分享"/>
     </span>
 
     
@@ -442,7 +440,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-09-16 21:01:07" itemprop="dateModified" datetime="2018-09-16T21:01:07+08:00">2018-09-16</time>
+                <time title="修改时间：2020-03-05 15:41:53" itemprop="dateModified" datetime="2020-03-05T15:41:53+08:00">2020-03-05</time>
               
             
           </span>
@@ -497,6 +495,7 @@
 <p>不熟悉几何学的人就不要来这里了 –柏拉图学院入口的签名</p>
 </blockquote>
 <p>在第二章里面，我们介绍了图层背后的图片，和一些控制图层坐标和旋转的属性。在这一章中，我们将要看一看图层内部是如何根据父图层和兄弟图层来控制位置和尺寸的。另外我们也会涉及如何管理图层的几何结构，以及它是如何被自动调整和自动布局影响的。</p>
+<a id="more"></a>
 <h1 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h1><p>UIView有三个比较重要的布局属性：frame，bounds和center，CALayer对应地叫做frame，bounds和position。为了能清楚区分，图层用了“position”，视图用了“center”，但是他们都代表同样的值。</p>
 <p>frame代表了图层的外部坐标（也就是在父图层上占据的空间），bounds是内部坐标（{0, 0}通常是图层的左上角），center和position都代表了相对于父图层anchorPoint所在的位置。anchorPoint的属性将会在后续介绍到，现在把它想成图层的中心点就好了。图3.1显示了这些属性是如何相互依赖的。</p>
 <p><img src="/images/ios-core-animation/3.1.jpeg" alt="图3.1 UIView和CALayer的坐标系"></p>
@@ -804,7 +803,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

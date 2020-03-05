@@ -11,10 +11,8 @@
 
 
 
-  
 
-
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next gemini" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -79,7 +77,7 @@
     fastclick: false,
     lazyload: false,
     tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     algolia: {
       applicationID: '',
       apiKey: '',
@@ -96,19 +94,19 @@
 
 
 
-  <meta name="description" content="前言 如果想让事情变得顺利，只有靠自己 – 夏尔·纪尧姆  上一章介绍了隐式动画的概念。隐式动画是在iOS平台创建动态用户界面的一种直接方式，也是UIKit动画机制的基础，不过它并不能涵盖所有的动画类型。在这一章中，我们将要研究一下显式动画，它能够对一些属性做指定的自定义动画，或者创建非线性动画，比如沿着任意一条曲线移动。 属性动画动画组过度在动画过程中取消动画总结">
+  <meta name="description" content="前言 如果想让事情变得顺利，只有靠自己 – 夏尔·纪尧姆  上一章介绍了隐式动画的概念。隐式动画是在iOS平台创建动态用户界面的一种直接方式，也是UIKit动画机制的基础，不过它并不能涵盖所有的动画类型。在这一章中，我们将要研究一下显式动画，它能够对一些属性做指定的自定义动画，或者创建非线性动画，比如沿着任意一条曲线移动。">
 <meta name="keywords" content="核心动画">
 <meta property="og:type" content="article">
 <meta property="og:title" content="核心动画-隐式动画">
 <meta property="og:url" content="http://blog.devjackcat.com/2017/04/13/ios-core-animation/ios-core-animation-chapter-8/index.html">
-<meta property="og:site_name" content="JackCat">
-<meta property="og:description" content="前言 如果想让事情变得顺利，只有靠自己 – 夏尔·纪尧姆  上一章介绍了隐式动画的概念。隐式动画是在iOS平台创建动态用户界面的一种直接方式，也是UIKit动画机制的基础，不过它并不能涵盖所有的动画类型。在这一章中，我们将要研究一下显式动画，它能够对一些属性做指定的自定义动画，或者创建非线性动画，比如沿着任意一条曲线移动。 属性动画动画组过度在动画过程中取消动画总结">
+<meta property="og:site_name" content="技术经验分享">
+<meta property="og:description" content="前言 如果想让事情变得顺利，只有靠自己 – 夏尔·纪尧姆  上一章介绍了隐式动画的概念。隐式动画是在iOS平台创建动态用户界面的一种直接方式，也是UIKit动画机制的基础，不过它并不能涵盖所有的动画类型。在这一章中，我们将要研究一下显式动画，它能够对一些属性做指定的自定义动画，或者创建非线性动画，比如沿着任意一条曲线移动。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://blog.devjackcat.com/images/ios-core-animation/7.1.jpeg">
-<meta property="og:updated_time" content="2018-09-16T13:01:07.743Z">
+<meta property="og:updated_time" content="2020-03-05T07:42:12.340Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="核心动画-隐式动画">
-<meta name="twitter:description" content="前言 如果想让事情变得顺利，只有靠自己 – 夏尔·纪尧姆  上一章介绍了隐式动画的概念。隐式动画是在iOS平台创建动态用户界面的一种直接方式，也是UIKit动画机制的基础，不过它并不能涵盖所有的动画类型。在这一章中，我们将要研究一下显式动画，它能够对一些属性做指定的自定义动画，或者创建非线性动画，比如沿着任意一条曲线移动。 属性动画动画组过度在动画过程中取消动画总结">
+<meta name="twitter:description" content="前言 如果想让事情变得顺利，只有靠自己 – 夏尔·纪尧姆  上一章介绍了隐式动画的概念。隐式动画是在iOS平台创建动态用户界面的一种直接方式，也是UIKit动画机制的基础，不过它并不能涵盖所有的动画类型。在这一章中，我们将要研究一下显式动画，它能够对一些属性做指定的自定义动画，或者创建非线性动画，比如沿着任意一条曲线移动。">
 <meta name="twitter:image" content="http://blog.devjackcat.com/images/ios-core-animation/7.1.jpeg">
 
 
@@ -126,7 +124,7 @@
   };
 </script>
 
-  <title>核心动画-隐式动画 | JackCat</title>
+  <title>核心动画-隐式动画 | 技术经验分享</title>
   
 
 
@@ -185,7 +183,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">JackCat</span>
+        <span class="site-title">技术经验分享</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -382,7 +380,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JackCat"/>
+      <meta itemprop="name" content="技术经验分享"/>
     </span>
 
     
@@ -433,7 +431,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-09-16 21:01:07" itemprop="dateModified" datetime="2018-09-16T21:01:07+08:00">2018-09-16</time>
+                <time title="修改时间：2020-03-05 15:42:12" itemprop="dateModified" datetime="2020-03-05T15:42:12+08:00">2020-03-05</time>
               
             
           </span>
@@ -488,6 +486,7 @@
 <p>如果想让事情变得顺利，只有靠自己 – 夏尔·纪尧姆</p>
 </blockquote>
 <p>上一章介绍了隐式动画的概念。隐式动画是在iOS平台创建动态用户界面的一种直接方式，也是UIKit动画机制的基础，不过它并不能涵盖所有的动画类型。在这一章中，我们将要研究一下显式动画，它能够对一些属性做指定的自定义动画，或者创建非线性动画，比如沿着任意一条曲线移动。</p>
+<a id="more"></a>
 <h1 id="属性动画"><a href="#属性动画" class="headerlink" title="属性动画"></a>属性动画</h1><h1 id="动画组"><a href="#动画组" class="headerlink" title="动画组"></a>动画组</h1><h1 id="过度"><a href="#过度" class="headerlink" title="过度"></a>过度</h1><h1 id="在动画过程中取消动画"><a href="#在动画过程中取消动画" class="headerlink" title="在动画过程中取消动画"></a>在动画过程中取消动画</h1><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><img src="/images/ios-core-animation/7.1.jpeg" alt="图7.1 添加一个按钮来控制图层颜色"></p>
 
       
@@ -731,7 +730,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

@@ -11,10 +11,8 @@
 
 
 
-  
 
-
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next gemini" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -79,7 +77,7 @@
     fastclick: false,
     lazyload: false,
     tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     algolia: {
       applicationID: '',
       apiKey: '',
@@ -96,17 +94,17 @@
 
 
 
-  <meta name="description" content="在几乎每一种计算机程序语言中，解析字符串都是我们不得不面对的问题。有时这些字符串以一种简单的格式出现，有时它们又变得很复杂。我们将利用多种方法把字符串转换成我们需要的东西。下面，我们将讨论正则表达式、扫描器、解析器以及在什么时候使用它们。 正则法 vs. 上下文无关文法（Context-Free Grammars）首先，介绍一点点背景知识：解析一个字符串，其实就是用特定的语言来描述它。例如：把 @">
+  <meta name="description" content="在几乎每一种计算机程序语言中，解析字符串都是我们不得不面对的问题。有时这些字符串以一种简单的格式出现，有时它们又变得很复杂。我们将利用多种方法把字符串转换成我们需要的东西。下面，我们将讨论正则表达式、扫描器、解析器以及在什么时候使用它们。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="字符串解析">
 <meta property="og:url" content="http://blog.devjackcat.com/2017/04/17/string-parsing/index.html">
-<meta property="og:site_name" content="JackCat">
-<meta property="og:description" content="在几乎每一种计算机程序语言中，解析字符串都是我们不得不面对的问题。有时这些字符串以一种简单的格式出现，有时它们又变得很复杂。我们将利用多种方法把字符串转换成我们需要的东西。下面，我们将讨论正则表达式、扫描器、解析器以及在什么时候使用它们。 正则法 vs. 上下文无关文法（Context-Free Grammars）首先，介绍一点点背景知识：解析一个字符串，其实就是用特定的语言来描述它。例如：把 @">
+<meta property="og:site_name" content="技术经验分享">
+<meta property="og:description" content="在几乎每一种计算机程序语言中，解析字符串都是我们不得不面对的问题。有时这些字符串以一种简单的格式出现，有时它们又变得很复杂。我们将利用多种方法把字符串转换成我们需要的东西。下面，我们将讨论正则表达式、扫描器、解析器以及在什么时候使用它们。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-16T13:01:07.744Z">
+<meta property="og:updated_time" content="2020-03-05T07:40:55.116Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="字符串解析">
-<meta name="twitter:description" content="在几乎每一种计算机程序语言中，解析字符串都是我们不得不面对的问题。有时这些字符串以一种简单的格式出现，有时它们又变得很复杂。我们将利用多种方法把字符串转换成我们需要的东西。下面，我们将讨论正则表达式、扫描器、解析器以及在什么时候使用它们。 正则法 vs. 上下文无关文法（Context-Free Grammars）首先，介绍一点点背景知识：解析一个字符串，其实就是用特定的语言来描述它。例如：把 @">
+<meta name="twitter:description" content="在几乎每一种计算机程序语言中，解析字符串都是我们不得不面对的问题。有时这些字符串以一种简单的格式出现，有时它们又变得很复杂。我们将利用多种方法把字符串转换成我们需要的东西。下面，我们将讨论正则表达式、扫描器、解析器以及在什么时候使用它们。">
 
 
 
@@ -123,7 +121,7 @@
   };
 </script>
 
-  <title>字符串解析 | JackCat</title>
+  <title>字符串解析 | 技术经验分享</title>
   
 
 
@@ -182,7 +180,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">JackCat</span>
+        <span class="site-title">技术经验分享</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -379,7 +377,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JackCat"/>
+      <meta itemprop="name" content="技术经验分享"/>
     </span>
 
     
@@ -430,7 +428,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-09-16 21:01:07" itemprop="dateModified" datetime="2018-09-16T21:01:07+08:00">2018-09-16</time>
+                <time title="修改时间：2020-03-05 15:40:55" itemprop="dateModified" datetime="2020-03-05T15:40:55+08:00">2020-03-05</time>
               
             
           </span>
@@ -482,6 +480,7 @@
 
       
         <p>在几乎每一种计算机程序语言中，解析字符串都是我们不得不面对的问题。有时这些字符串以一种简单的格式出现，有时它们又变得很复杂。我们将利用多种方法把字符串转换成我们需要的东西。下面，我们将讨论正则表达式、扫描器、解析器以及在什么时候使用它们。</p>
+<a id="more"></a>
 <h1 id="正则法-vs-上下文无关文法（Context-Free-Grammars）"><a href="#正则法-vs-上下文无关文法（Context-Free-Grammars）" class="headerlink" title="正则法 vs. 上下文无关文法（Context-Free Grammars）"></a>正则法 vs. 上下文无关文法（Context-Free Grammars）</h1><p>首先，介绍一点点背景知识：解析一个字符串，其实就是用特定的语言来描述它。例如：把 @”42” 解析成数字，我们会采用自然数来描述这个字符串。语言都是用语法来描述的，语法其实就是一些规则的集合，这些规则可以用字符串来描述。比如自然数，仅仅有一条规则：字符串的描述就是一个数字序列。这种语言也可以用标准 C 函数或者正则表达式来描述。如果我们用正则表达式来描述一种语言，我们就可以说它有正则语法。</p>
 <p>假设我们有一个表达式：”1 + 2 * 3”，解析它就不容易。像这种表达式，我们可以用归纳语法来描述。换句话说，就是有一种语法，它的规则就是指的是它们自己，有时候甚至是递归的方式。为了识别这种语法，我们有三个规则：</p>
 <ol>
@@ -789,7 +788,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
